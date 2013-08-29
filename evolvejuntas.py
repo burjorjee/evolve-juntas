@@ -16,33 +16,48 @@ try:
 except:
     pass
 
-def learnJuntas(k, n, kJunta, votingTreeDepth, learnedJuntas, assignment=None, visualizer=None,  recursionDepth=0):
+def learnJuntas(k, n, kJunta, votingTreeDepth, learnedJuntas, restriction=None, visualizer=None,  recursionDepth=0):
     """
-    learns the relevant variables of the specified k-junta
-    @param k: upper bound on the number of juntas
-    @param n: the total number of boolean variables
-    @param kJunta: the k-junta
-    @param votingTreeDepth: recursion depth of three way majority voting
-    @param learnedJuntas: the juntas that have been learned
-    @param assignment:list of (index, value) tuples specifying  variable indices and their fixed values
-    @param visualizer: function used to visualize GA populations
-    @param recursionDepth: depth at which this function is called recursively
-    @returns a set of learned junta indices
+    Learn the relevant variables of the specified k-junta
+
+    Parameters
+    ----------
+    k : int
+        Upper bound on the number of juntas
+    n : int
+        The total number of boolean variables
+    kJunta : Python function
+        The k-junta
+    votingTreeDepth : int
+        Recursion depth of three way majority voting
+    learnedJuntas : set
+        The juntas that have been learned
+    assignment : list of (index, value) tuples
+        A list of variable indices and the (fixed) values assigned to them
+    visualizer : Python function
+        A function that visually displays the state of the GA populations
+    recursionDepth : int
+        The depth at which this function is called recursively by itself
+
+    Returns
+    -------
+      : set
+         The learned junta indices
     """
 
     probMutation = 0.004
     numGens = 300
     popSize = 500
-    if not assignment:
-        assignment = []
+    if not restriction:
+        restriction = []
 
     indentation = "\t"*recursionDepth
     
     hypotheses = zeros((3**votingTreeDepth, n), dtype=bool)
     for i in range(3**votingTreeDepth):
         juntaIndices = set()
-        assignmentEnforcingQueryFn = createAssignmentEnforcingBooleanFn(assignment, kJunta)
-        print indentation + "======== run %s ========" % (i+1)
+        assignmentEnforcingQueryFn = createAssignmentEnforcingBooleanFn(restriction, kJunta)
+        print indentation + "======== Round %s ========" % (i+1)
         ugas = [ugaEvolve(popSize, n, probMutation, assignmentEnforcingQueryFn),
                 ugaEvolve(popSize, n, probMutation, lambda x: logical_not(assignmentEnforcingQueryFn(x)))]
 
@@ -55,7 +70,7 @@ def learnJuntas(k, n, kJunta, votingTreeDepth, learnedJuntas, assignment=None, v
         for oneFreqs in oneFreqsList:
             juntaIndices.update(
                 {i for i in flatnonzero(logical_not(logical_and(0.05 < oneFreqs, oneFreqs < 0.95)))
-                 if not assignment or i not in zip(*assignment)[0]})
+                 if not restriction or i not in zip(*restriction)[0]})
 
         print indentation + "Hypothesized indices = %s" % array(sorted(list(juntaIndices)))
         print indentation + "#queries = " + locale.format("%d", 2 * popSize * numGens, grouping=True)
@@ -67,23 +82,22 @@ def learnJuntas(k, n, kJunta, votingTreeDepth, learnedJuntas, assignment=None, v
     newlyLearnedJuntas = learnedhypothesis.nonzero()[0]
     print indentation + "LEARNED juntas = %s" % newlyLearnedJuntas
     if len(newlyLearnedJuntas) == 0 :
-        s = "The function is not constant under the following assignment, "\
-            "but no junta could be learned. " \
-            "In other words, the algorithm has failed. " \
-            "Assignment = %s" % assignment
-        raise Exception(s)
+        print  indentation + "The function is not constant under the assignment %s, "\
+            "but no junta could be learned.\nIn other words, the algorithm has failed. " % restriction
+        return
     learnedJuntas.update(set(newlyLearnedJuntas))
-    for augmentedAssignment in exhaustivelyAugmentAssignment(assignment, learnedJuntas):
+    for augmentedAssignment in exhaustivelyAugmentAssignment(restriction, learnedJuntas):
         if len(learnedJuntas) >= k:
             print indentation + "#juntas learned >= k. Exiting..."
             break
         print indentation + "Checking for constancy under the %s assignment %s" % \
-            ("empty" if not augmentedAssignment else "", augmentedAssignment)
+            ("empty" if not augmentedAssignment else "following",
+             "\n"+indentation+str(augmentedAssignment) if augmentedAssignment else "")
         assignmentEnforcingQueryFn = createAssignmentEnforcingBooleanFn(augmentedAssignment, kJunta)
         if iskJuntaConstant(k=k-len(augmentedAssignment), n=n, kJunta=assignmentEnforcingQueryFn):
-            print indentation + "Function seems constant under the assignment. Nothing to learn here; moving on..."
+            print indentation + "Function seems constant under the assignment. Moving on..."
             continue
-        print indentation + "Function is NOT constant under the assignment. " \
+        print indentation + "Function is NOT constant. " \
                             "Learning its juntas under the assignment..."
         learnJuntas(k, n,
                     kJunta,
@@ -156,6 +170,7 @@ def createAssignmentEnforcingBooleanFn(assignment, booleanFn):
     def assignmentEnforcingBooleanFn(bitstrings):
         bitstrings[:, zip(*assignment)[0]] = zip(*assignment)[1]
         return booleanFn(bitstrings)
+
     if assignment:
         return assignmentEnforcingBooleanFn
     else:
@@ -165,10 +180,11 @@ def iskJuntaConstant(k, n, kJunta):
     """
     is the specified kJunta over n variables constant?
     """
-    queries = rand(2 * 2**k, n) < 0.5
-    results = kJunta(queries)
-    if np.any(results) != np.all(results):
-        return False
+    for x in xrange(2*2**k):
+        queries = rand(1000, n) < 0.5
+        results = kJunta(queries)
+        if np.any(results) != np.all(results):
+            return False
     return True
 
 def exhaustivelyAugmentAssignment(assignment, learnedJuntas):
@@ -282,7 +298,7 @@ def recoverJuntas(k, n,
                   hiddenFnName="random",
                   juntaIndices=None,
                   juntaCreationRngSeed=None,
-                  algoMajorityVotingDepth=1,
+                  algoMajorityVotingDepth=0,
                   algoRngSeed=None,
                   algoVisualize=False,
                   ):
@@ -314,7 +330,7 @@ def recoverJuntas(k, n,
         juntaCreationRngSeed = int(time.time())
     seed(juntaCreationRngSeed)
 
-    hiddenFn = createBooleanFunction(hiddenFnName, k)
+    hiddenFnName = createBooleanFunction(hiddenFnName, k)
 
     if juntaIndices:
         juntaIndices = array(sorted(juntaIndices))
@@ -331,16 +347,16 @@ def recoverJuntas(k, n,
     print "Learning algorithm RNG seed: %s" %algoRngSeed
     print "n = %s" % n
     print "k = %s" % k
-    print "Hidden boolean function = %s" % ("".join(["1" if b else "0" for b in hiddenFn[:128].tolist()]) +
+    print "Hidden boolean function = %s" % ("".join(["1" if b else "0" for b in hiddenFnName[:128].tolist()]) +
                                                ("...followed by %s bits" % locale.format("%d", 2**k-128, grouping=True)
-                                                    if len(hiddenFn)>128 else ""))
+                                                    if len(hiddenFnName)>128 else ""))
     print "True junta indices =   %s" % juntaIndices
 
 
     #initialize the oracle
     oracle = MembershipQueryKJuntaOracle(k, n,
                                          juntaIndices,
-                                         hiddenFn)
+                                         hiddenFnName)
 
     print "Checking for constancy..."
     if iskJuntaConstant(k, n, oracle.query):
@@ -357,14 +373,15 @@ def recoverJuntas(k, n,
                     visualizer=visualizeGen if algoVisualize else None)
         recoveredJuntaIndices = array(sorted(recoveredJuntaIndices))
 
+    match = (len(juntaIndices) == len(recoveredJuntaIndices) and all(juntaIndices == recoveredJuntaIndices))
     print "_______________________________________________"
     print "True junta indices      = %s" % juntaIndices
     print "Recovered junta indices = %s" % recoveredJuntaIndices
-    print "Match? : %s" % (len(juntaIndices) == len(recoveredJuntaIndices) and
-            all(juntaIndices == recoveredJuntaIndices))
+    print "Match? : %s" %  match
     print
     print "Total number of queries = " + locale.format("%d", oracle.numQueriesAnswered, grouping=True)
     print
+    return match
 
 class Timer:
 
