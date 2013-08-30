@@ -16,7 +16,7 @@ try:
 except:
     pass
 
-def learnJuntas(k, n, kJunta, votingTreeDepth, learnedJuntas, restriction=None, visualizer=None,  recursionDepth=0):
+def learnJuntas(k, n, membershipQueryFn, votingTreeDepth, learnedJuntas, restriction=None, visualizer=None,  recursionDepth=0):
     """
     Learn the relevant variables of the specified k-junta
 
@@ -26,13 +26,13 @@ def learnJuntas(k, n, kJunta, votingTreeDepth, learnedJuntas, restriction=None, 
         Upper bound on the number of juntas
     n : int
         The total number of boolean variables
-    kJunta : Python function
-        The k-junta
+    membershipQueryFn : Python function
+        The membership query function
     votingTreeDepth : int
         Recursion depth of three way majority voting
     learnedJuntas : set
         The juntas that have been learned
-    assignment : list of (index, value) tuples
+    restriction : list of (index, value) tuples
         A list of variable indices and the (fixed) values assigned to them
     visualizer : Python function
         A function that visually displays the state of the GA populations
@@ -56,10 +56,10 @@ def learnJuntas(k, n, kJunta, votingTreeDepth, learnedJuntas, restriction=None, 
     hypotheses = zeros((3**votingTreeDepth, n), dtype=bool)
     for i in range(3**votingTreeDepth):
         juntaIndices = set()
-        assignmentEnforcingQueryFn = createAssignmentEnforcingBooleanFn(restriction, kJunta)
+        restrictedQueryFn = createRestrictedFn(restriction, membershipQueryFn)
         print indentation + "======== Round %s ========" % (i+1)
-        ugas = [ugaEvolve(popSize, n, probMutation, assignmentEnforcingQueryFn),
-                ugaEvolve(popSize, n, probMutation, lambda x: logical_not(assignmentEnforcingQueryFn(x)))]
+        ugas = [ugaEvolve(popSize, n, probMutation, restrictedQueryFn),
+                ugaEvolve(popSize, n, probMutation, lambda x: logical_not(restrictedQueryFn(x)))]
 
         with Timer(indentation):
             for gen in xrange(numGens):
@@ -82,28 +82,28 @@ def learnJuntas(k, n, kJunta, votingTreeDepth, learnedJuntas, restriction=None, 
     newlyLearnedJuntas = learnedhypothesis.nonzero()[0]
     print indentation + "LEARNED juntas = %s" % newlyLearnedJuntas
     if len(newlyLearnedJuntas) == 0 :
-        print  indentation + "The function is not constant under the assignment %s, "\
+        print  indentation + "The function is not constant under the restriction %s, "\
             "but no junta could be learned.\nIn other words, the algorithm has failed. " % restriction
         return
     learnedJuntas.update(set(newlyLearnedJuntas))
-    for augmentedAssignment in exhaustivelyAugmentAssignment(restriction, learnedJuntas):
+    for augmentedRestriction in exhaustivelyAugmentRestriction(restriction, learnedJuntas):
         if len(learnedJuntas) >= k:
             print indentation + "#juntas learned >= k. Exiting..."
             break
-        print indentation + "Checking for constancy under the %s assignment %s" % \
-            ("empty" if not augmentedAssignment else "following",
-             "\n"+indentation+str(augmentedAssignment) if augmentedAssignment else "")
-        assignmentEnforcingQueryFn = createAssignmentEnforcingBooleanFn(augmentedAssignment, kJunta)
-        if iskJuntaConstant(k=k-len(augmentedAssignment), n=n, kJunta=assignmentEnforcingQueryFn):
-            print indentation + "Function seems constant under the assignment. Moving on..."
+        print indentation + "Checking for constancy under the %s restriction %s" % \
+            ("empty" if not augmentedRestriction else "following",
+             "\n"+indentation+str(augmentedRestriction) if augmentedRestriction else "")
+        restrictedQueryFn = createRestrictedFn(augmentedRestriction, membershipQueryFn)
+        if iskJuntaConstant(k=k-len(augmentedRestriction), n=n, kJunta=restrictedQueryFn):
+            print indentation + "Function seems constant under the restriction. Moving on..."
             continue
         print indentation + "Function is NOT constant. " \
-                            "Learning its juntas under the assignment..."
+                            "Learning its juntas under the restriction..."
         learnJuntas(k, n,
-                    kJunta,
+                    membershipQueryFn,
                     votingTreeDepth,
                     learnedJuntas,
-                    augmentedAssignment,
+                    augmentedRestriction,
                     visualizer,
                     recursionDepth+1)
 
@@ -115,10 +115,19 @@ def ugaEvolve(popSize, bitstringLength, probMutation, fitnessFn):
     uniform crossover, and the per bit mutation with the specified
     mutation rate
 
-    @param popSize: the size of the population
-    @param bitstringLength: the length of each bitstring in the population
-    @param probMutation: the probability that a given bit will be mutated
-                         in a single generation
+    Parameters
+    ----------
+    popSize : int
+        The size of the population
+    bitstringLength : int
+        The length of each bitstring in the population
+    probMutation : float
+        The probability that a given bit will be mutated
+        in a single generation
+
+    Returns
+    -------
+        A generator object
     """
 
     # initialize a population of bitstrings drawn uniformly at random
@@ -160,21 +169,21 @@ def ugaEvolve(popSize, bitstringLength, probMutation, fitnessFn):
         pop = logical_xor(newPop, mutationMasks)
 
 
-def createAssignmentEnforcingBooleanFn(assignment, booleanFn):
+def createRestrictedFn(restriction, fn):
     """
-    Takes a boolean function booleanFn and an assignment as input and
+    Takes a function fn and a restriction as input and
     returns a function that for any input sets the variables
-    specified in the assignment to the assigned value before querying
-    booleanFn with the input and returning the output
+    specified in the restriction to the assigned values,
+    queries the function and returns the output
     """
-    def assignmentEnforcingBooleanFn(bitstrings):
-        bitstrings[:, zip(*assignment)[0]] = zip(*assignment)[1]
-        return booleanFn(bitstrings)
+    def restrictedFn(inputs):
+        inputs[:, zip(*restriction)[0]] = zip(*restriction)[1]
+        return fn(inputs)
 
-    if assignment:
-        return assignmentEnforcingBooleanFn
+    if restriction:
+        return restrictedFn
     else:
-        return booleanFn
+        return fn
 
 def iskJuntaConstant(k, n, kJunta):
     """
@@ -187,26 +196,25 @@ def iskJuntaConstant(k, n, kJunta):
             return False
     return True
 
-def exhaustivelyAugmentAssignment(assignment, learnedJuntas):
+def exhaustivelyAugmentRestriction(restriction, learnedJuntas):
     """
-    Generator function that returns the given assignment with all possible assignments of
-    boolean values to the the indices in indicesToAddToAssignment.
+    Generator function that yields the given restriction exhaustively augmented with
+    assignments of boolean values to learned but as yet unrestricted juntas
 
     """
-    #import pdb; pdb.set_trace()
-    unassignedIndices = learnedJuntas - set(zip(*assignment)[0] if assignment else [])
-    if not unassignedIndices:
-            yield assignment
+    indicesToRestrict = learnedJuntas - set(zip(*restriction)[0] if restriction else [])
+    if not indicesToRestrict:
+            yield restriction
     else:
-        indexToAdd = min(unassignedIndices)
-        assignment.append((indexToAdd, 0))
-        for augmentedAssignment in exhaustivelyAugmentAssignment(assignment, learnedJuntas):
-            yield augmentedAssignment
-        assignment.pop()
-        assignment.append((indexToAdd, 1))
-        for augmentedAssignment in exhaustivelyAugmentAssignment(assignment, learnedJuntas):
-            yield augmentedAssignment
-        assignment.pop()
+        indexToAdd = min(indicesToRestrict)
+        restriction.append((indexToAdd, 0))
+        for augmentedRestriction in exhaustivelyAugmentRestriction(restriction, learnedJuntas):
+            yield augmentedRestriction
+        restriction.pop()
+        restriction.append((indexToAdd, 1))
+        for augmentedRestriction in exhaustivelyAugmentRestriction(restriction, learnedJuntas):
+            yield augmentedRestriction
+        restriction.pop()
 
 def threeWayMajority(hypothesis1, hypothesis2, hypothesis3):
     return hypothesis1.astype("int16") + \
@@ -229,8 +237,13 @@ def createBooleanFunction(name, numInputs):
     """
     Returns an array of 2^numInputs boolean values representing
     a boolean function over numInputs inputs
-    @param name: Should be one of "and", "or", "parity", or "random"
-    @param numInputs: The number of inputs to the boolean function
+
+    Parameters
+    ----------
+    name : str
+        Should be one of "and", "or", "parity", or "random"
+    numInputs : int
+        The number of inputs to the boolean function
     """
     name = name.lower()
     if name == "and":
@@ -282,7 +295,9 @@ class MembershipQueryKJuntaOracle(object):
 
     def query(self, queries):
         """
-        @param queries: an array of queries (each row is a single query)
+        Parameters
+        ----------
+            queries: an array of queries (each row is a single query)
         """
         numQueries, _ = queries.shape
 
@@ -298,15 +313,13 @@ def recoverJuntas(k, n,
                   hiddenFnName="random",
                   juntaIndices=None,
                   juntaCreationRngSeed=None,
-                  algoMajorityVotingDepth=0,
+                  majorityVotingDepth=0,
                   algoRngSeed=None,
-                  algoVisualize=False,
+                  visualize=False,
                   ):
     """
     Set up a leaning juntas problem. Then learn the juntas.
 
-    Parameters with an algo prefix are algorithm specific.
-    Other parameters specify k-junta creation.
     """
     def visualizeGen(genNum, *oneFreqs):
         numPops = len(oneFreqs)
@@ -358,29 +371,29 @@ def recoverJuntas(k, n,
                                          juntaIndices,
                                          hiddenFnName)
 
-    print "Checking for constancy..."
-    if iskJuntaConstant(k, n, oracle.query):
-        print "Function seems to be constant."
-        recoveredJuntaIndices = []
-    else:
-        print "Function is NOT constant. Learning its juntas..."
-        # learn the juntas
-        recoveredJuntaIndices = set()
-        learnJuntas(k, n,
-                    kJunta=oracle.query,
-                    learnedJuntas=recoveredJuntaIndices,
-                    votingTreeDepth=algoMajorityVotingDepth,
-                    visualizer=visualizeGen if algoVisualize else None)
-        recoveredJuntaIndices = array(sorted(recoveredJuntaIndices))
+    with Timer() as t:
+        print "Checking for constancy..."
+        if iskJuntaConstant(k, n, oracle.query):
+            print "Function seems to be constant."
+            recoveredJuntaIndices = []
+        else:
+            print "Function is NOT constant. Learning its juntas..."
+            # learn the juntas
+            recoveredJuntaIndices = set()
+            learnJuntas(k, n,
+                        membershipQueryFn=oracle.query,
+                        learnedJuntas=recoveredJuntaIndices,
+                        votingTreeDepth=majorityVotingDepth,
+                        visualizer=visualizeGen if visualize else None)
+            recoveredJuntaIndices = array(sorted(recoveredJuntaIndices))
 
-    match = (len(juntaIndices) == len(recoveredJuntaIndices) and all(juntaIndices == recoveredJuntaIndices))
-    print "_______________________________________________"
-    print "True junta indices      = %s" % juntaIndices
-    print "Recovered junta indices = %s" % recoveredJuntaIndices
-    print "Match? : %s" %  match
-    print
-    print "Total number of queries = " + locale.format("%d", oracle.numQueriesAnswered, grouping=True)
-    print
+        match = (len(juntaIndices) == len(recoveredJuntaIndices) and all(juntaIndices == recoveredJuntaIndices))
+        print "_______________________________________________"
+        print "True junta indices      = %s" % juntaIndices
+        print "Recovered junta indices = %s" % recoveredJuntaIndices
+        print "Match? : %s" %  match
+        print
+        print "Total number of queries = " + locale.format("%d", oracle.numQueriesAnswered, grouping=True)
     return match
 
 class Timer:
