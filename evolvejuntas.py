@@ -1,8 +1,8 @@
 """
-An evorithm that, scalably ( O(polylog n) queries, and
-O(n polylog n)time, where n is the totalnumber of
-attributes ) learns the relevant attributes of k-juntas
-for small values of k given a membership query oracle
+An evolution based algorithm that, scalably ( O(polylog n) queries, and
+O(n polylog n)time, where n is the total number of attributes ) learns
+the relevant attributes of k-juntas for small values of k given a
+membership query oracle
 """
 
 import numpy as np
