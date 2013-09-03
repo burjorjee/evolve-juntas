@@ -1,119 +1,279 @@
 """
-An evolution based algorithm that scalably (w.r.t. the total number of variables) learns
-the relevant variables of $k$-juntas given a membership query oracle when $k$ is small
+An evorithm that, scalably ( O(polylog n) queries, and
+O(n polylog n)time, where n is the totalnumber of
+attributes ) learns the relevant attributes of k-juntas
+for small values of k given a membership query oracle
 """
-from string import replace
 
 import numpy as np
-from numpy import arange, empty, histogram, logical_xor, logical_and, \
-    squeeze, r_, logical_not, flatnonzero, array, zeros, ones, cumsum
+from numpy import arange, logical_xor, logical_and, log2, logical_not, \
+    flatnonzero, array, zeros, ones, array_equal
 from numpy.random import rand, shuffle, seed, randint
 import locale
 import time
+import traceback
 try:
     from matplotlib.pylab import plot, axis, figure, hold, title, subplot
     from matplotlib.pyplot import xlabel, ylabel
 except:
     pass
 
-def learnJuntas(k, n, membershipQueryFn, votingTreeDepth, learnedJuntas, restriction=None, visualizer=None,  recursionDepth=0):
+
+class KJunta(object):
+
+    def __init__(self, n, juntas, hiddenFn, k=None, rngSeed=None):
+        """
+        Parameters
+        ----------
+        n : int
+            number of inputs to the k-junta
+
+        juntas : an int or a one dimensional array of integers
+            if int:
+                the number of juntas (whose indices will be chosen at random
+            else:
+                the indices of the junta
+
+        hiddenFn : str or a one dimensional numpy array of boolean values
+            if str:
+                must be one of "and", "or", "parity", or "random"
+            else:
+                The rightmost column of the hidden function's truth table
+                The hidden function specified must be minimal. i.e. it must
+                not itself have a function hidden within it.
+        k : int
+            Advertised upperbound on the number of juntas
+        """
+        if not rngSeed:
+            rngSeed = int(time.time())
+        seed(rngSeed)
+        self.rngSeed = rngSeed
+
+        self.j = juntas if isinstance(juntas, int) else len(juntas)
+        if self.j > n:
+            raise Exception("The number of juntas (%s) must be less than or equal to n (%s)" % (self.j, n))
+
+        if isinstance(hiddenFn, str):
+            while True:
+                self.hiddenFn = createBooleanFn(hiddenFn, self.j)
+                try:
+                    assertBooleanFnIsMinimal(self.hiddenFn, self.j)
+                    break
+                except BooleanFunctionIsNotMinimalException, e:
+                    pass
+                except Exception, e:
+                    traceback.print_exc()
+                    raise e
+        else:
+            self.hiddenFn = hiddenFn
+            if len(self.hiddenFn) != 2**self.j:
+                raise Exception("hiddenFn must be a list of exactly %s boolean values" % 2**self.j)
+            assertBooleanFnIsMinimal(self.hiddenFn, self.j)
+
+        if isinstance(juntas, int):
+            x = arange(n)
+            shuffle(x)
+            self.juntas = array(sorted(x[:self.j]))
+        else:
+            self.juntas = juntas
+
+        if k is None:
+            self.k = self.j
+        else:
+            assert k >= self.j
+            self.k = k
+
+        self.n = n
+
+def assertBooleanFnIsMinimal(booleanFn, numInputs):
     """
-    Learn the relevant variables of the specified k-junta
+    Asserts that no boolean function is "hidden" within the given boolean function
+    """
+    inputValues2TruthTableRowNum = create_inputValues2TruthTableRowNum(numInputs)
+    for i in xrange(numInputs):
+        x, y = [slice(2)] * numInputs , [slice(2)] * numInputs
+        x[i], y[i] = 0, 1
+        if array_equal(booleanFn[inputValues2TruthTableRowNum[tuple(x)]],
+                       booleanFn[inputValues2TruthTableRowNum[tuple(y)]]):
+            raise BooleanFunctionIsNotMinimalException("The hidden function must be  minimal")
+
+
+def create_inputValues2TruthTableRowNum(numInputs):
+    """
+    Returns an array a of dimension numInputs such that for any tuple
+    of boolean values v = (x_1, x_2, ..., x_numInputs), a[v] returns the
+    vertical zero indexed position of v in the truth table of a boolean
+    function with numInputs inputs
+    """
+    def create_inputValues2TruthTableRowNumHelper(inputValues, idx):
+        if idx == len(inputValues):
+            inputValues2TruthTableRowNum[tuple(inputValues)] = (inputValues * multiplicands).sum()
+        else:
+            create_inputValues2TruthTableRowNumHelper(inputValues, idx+1)
+            inputValues[idx] = 1
+            create_inputValues2TruthTableRowNumHelper(inputValues, idx+1)
+            inputValues[idx] = 0
+
+    inputValues2TruthTableRowNum = zeros((2,)*numInputs, dtype = int)
+    multiplicands = 2**arange(numInputs)
+    create_inputValues2TruthTableRowNumHelper([0]*numInputs, 0)
+    return inputValues2TruthTableRowNum
+
+
+class BooleanFunctionIsNotMinimalException(Exception):
+    def __init__(self, message):
+        Exception(self, message)
+
+
+class MembershipQueryKJuntaOracle(object):
+    """
+    A membership query oracle that internally queries a k-junta
+    """
+    def __init__(self, kJunta):
+        """
+        Parameters
+        ----------
+        kJunta : KJunta
+            The KJunta
+        """
+        self.__kJunta = kJunta
+        self.numQueriesAnswered = 0
+
+        # precompute multiplicands used in the calculation of the
+        # value of hidden function given any input
+        self.multiplicands = 2**arange(len(kJunta.juntas))
+
+    def query(self, queries):
+        """
+        Parameters
+        ----------
+        queries: an ndarray of booleans
+            Each row is a query
+        """
+        numQueries, inputsPerQuery = queries.shape
+        assert self.__kJunta.n == inputsPerQuery
+        booleanFunctionTableRowIndices = \
+            (queries[:, self.__kJunta.juntas] * self.multiplicands).sum(axis=1, dtype=int)
+        results = self.__kJunta.hiddenFn[booleanFunctionTableRowIndices]
+
+        self.numQueriesAnswered += numQueries
+        return results
+
+
+def learnJuntas(n, k, membershipQueryFn, threeWayMajorityVotingDepth, learnedJuntas,
+                restriction=None, visualizer=None,  recursionDepth=0, crippleFactor=0):
+    """
+    Learn the relevant attributes of the specified k-junta
 
     Parameters
     ----------
-    k : int
-        Upper bound on the number of juntas
     n : int
-        The total number of boolean variables
+        The total number of boolean attributes
+    k : int
+        Advertised upper bound on the number of juntas
     membershipQueryFn : Python function
         The membership query function
-    votingTreeDepth : int
+    threeWayMajorityVotingDepth : int
         Recursion depth of three way majority voting
     learnedJuntas : set
         The juntas that have been learned
     restriction : list of (index, value) tuples
-        A list of variable indices and the (fixed) values assigned to them
+        A list of attribute indices and the (fixed) values assigned to them
     visualizer : Python function
         A function that visually displays the state of the GA populations
     recursionDepth : int
         The depth at which this function is called recursively by itself
 
+    crippleFactor: float between 0.0 and 1.0
+        A non zero value marginally decreases the false negative rate while
+        greatly increasing the false positive rate. Cranking up this value
+        allows one to demonstrate the usefulness of "downstream" error
+        correcting routines at low values of n
+
     Returns
     -------
-      : set
-         The learned junta indices
+      : set of ints
+         The learned junta
     """
 
-    probMutation = 0.004
+    probMutation = 0.005 * (1-crippleFactor)
     numGens = 300
     popSize = 500
     if not restriction:
         restriction = []
 
     indentation = "\t"*recursionDepth
-    
-    hypotheses = zeros((3**votingTreeDepth, n), dtype=bool)
-    for i in range(3**votingTreeDepth):
-        juntaIndices = set()
+
+    hypotheses = zeros((3**threeWayMajorityVotingDepth, n), dtype=bool)
+    for i in range(3**threeWayMajorityVotingDepth):
+        juntas = set()
         restrictedQueryFn = createRestrictedFn(restriction, membershipQueryFn)
-        print indentation + "======== Round %s ========" % (i+1)
+        print indentation + "======== Evolving Voter %s ========" % (i+1)
         ugas = [ugaEvolve(popSize, n, probMutation, restrictedQueryFn),
                 ugaEvolve(popSize, n, probMutation, lambda x: logical_not(restrictedQueryFn(x)))]
 
         with Timer(indentation):
-            for gen in xrange(numGens):
+            for gen in xrange(numGens+1):
                 oneFreqsList = [uga.next()["oneFreqs"] for uga in ugas]
                 if visualizer:
                     visualizer(gen, *oneFreqsList)
 
         for oneFreqs in oneFreqsList:
-            juntaIndices.update(
+            juntas.update(
                 {i for i in flatnonzero(logical_not(logical_and(0.05 < oneFreqs, oneFreqs < 0.95)))
                  if not restriction or i not in zip(*restriction)[0]})
 
-        print indentation + "Hypothesized indices = %s" % array(sorted(list(juntaIndices)))
+        print indentation + "Hypothesized junta = %s" % array(sorted(list(juntas)))
         print indentation + "#queries = " + locale.format("%d", 2 * popSize * numGens, grouping=True)
-        hypotheses[i,list(juntaIndices)] = 1
+        hypotheses[i,list(juntas)] = 1
 
     print indentation + "========================"
-    learnedhypothesis = recursive3WayMajority(*[hypotheses[i,:] for i in xrange(3**votingTreeDepth)])
+    learnedhypothesis = recursive3WayMajority(*[hypotheses[i,:] for i in xrange(3**threeWayMajorityVotingDepth)])
 
     newlyLearnedJuntas = learnedhypothesis.nonzero()[0]
     print indentation + "LEARNED juntas = %s" % newlyLearnedJuntas
     if len(newlyLearnedJuntas) == 0 :
         print  indentation + "The function is not constant under the restriction %s, "\
-            "but no junta could be learned.\nIn other words, the algorithm has failed. " % restriction
+            "but no junta could be learned.\nChances are the learning algorithm will fail. " % restriction
         return
     learnedJuntas.update(set(newlyLearnedJuntas))
     for augmentedRestriction in exhaustivelyAugmentRestriction(restriction, learnedJuntas):
         if len(learnedJuntas) >= k:
-            print indentation + "#juntas learned >= k. Exiting..."
+            print indentation + "Total #juntas learned >= k. Exiting..."
             break
         print indentation + "Checking for constancy under the %s restriction %s" % \
             ("empty" if not augmentedRestriction else "following",
              "\n"+indentation+str(augmentedRestriction) if augmentedRestriction else "")
         restrictedQueryFn = createRestrictedFn(augmentedRestriction, membershipQueryFn)
-        if iskJuntaConstant(k=k-len(augmentedRestriction), n=n, kJunta=restrictedQueryFn):
+        if iskJuntaConstant(n=n, k=k-len(augmentedRestriction), kJunta=restrictedQueryFn):
             print indentation + "Function seems constant under the restriction. Moving on..."
             continue
         print indentation + "Function is NOT constant. " \
                             "Learning its juntas under the restriction..."
-        learnJuntas(k, n,
+        learnJuntas(n, k,
                     membershipQueryFn,
-                    votingTreeDepth,
+                    threeWayMajorityVotingDepth,
                     learnedJuntas,
                     augmentedRestriction,
                     visualizer,
-                    recursionDepth+1)
+                    recursionDepth+1,
+                    crippleFactor)
 
 
 def ugaEvolve(popSize, bitstringLength, probMutation, fitnessFn):
     """
-    Evolve a population of bitstrings on the specified fitness function
-    using fitness proportionate stochastic universal sampling selection,
-    uniform crossover, and the per bit mutation with the specified
-    mutation rate
+    A Python generator that evolves a population of bitstrings on the
+    specified fitness function using uniform crossover,
+    and a per bit probability of mutation given by probMutation.
+    Selection is as follows:
+    if at least one bitstring evaluates to True under the fitnessFn:
+        Pick 2*popSize parents as close as possible to evenly
+        from amongst the bistrings that evaluate to True under
+        the fitnessFn
+    else:
+        Pick 2*popSize parents evenly from amongst the bitstrings
+        in the existing population (each bitstring gets picked twice)
+
 
     Parameters
     ----------
@@ -124,39 +284,31 @@ def ugaEvolve(popSize, bitstringLength, probMutation, fitnessFn):
     probMutation : float
         The probability that a given bit will be mutated
         in a single generation
-
-    Returns
-    -------
-        A generator object
+    fitnessFn : Python function
+        The fitness function to be used
     """
 
     # initialize a population of bitstrings drawn uniformly at random
     pop = rand(popSize,bitstringLength) < 0.5
     recombinationMasksRepo = rand(popSize * 10, bitstringLength) < 0.5
     mutationMasksRepo = rand(popSize * 10, bitstringLength) < probMutation
-    ctr = 0
     while True:
-        ctr += 1
 
         # evaluate fitness of each bitstring in the population
         fitnessVals = fitnessFn(pop)
 
-        #calculate the oneFrequency of all bitstringLength attributes
+        # calculate the oneFrequency of all bitstringLength attributes
         oneFreqs = pop.sum(axis=0, dtype=float) / popSize
         yield dict(oneFreqs=oneFreqs, fitnessVals=fitnessVals)
 
-        # use fitness proportional selection to select 2*popSize parents
-        totalFitness = sum(fitnessVals)
-        cumNormFitnessVals = squeeze(cumsum(fitnessVals).astype(float) / totalFitness)
-        parentIndices = empty(2 * popSize, dtype=int)
-        markers = arange(2 * popSize, dtype=float) / (2 * popSize) + rand()
-        markers[markers>1]-=1
-        numParentsWithIndex, _ = histogram(markers, bins=r_[0, cumNormFitnessVals])
-        j = 0
-        for i in range(popSize):
-            parentIndices[j:j+numParentsWithIndex[i]] = i
-            j += numParentsWithIndex[i]
-        shuffle(parentIndices)
+        # select parents
+        nonZeroFitnessValIndices = fitnessVals.nonzero()[0]
+        if len(nonZeroFitnessValIndices):
+            parentIndices = nonZeroFitnessValIndices[arange(2 * popSize, dtype=int) % len(nonZeroFitnessValIndices)]
+            shuffle(parentIndices)
+        else:
+            parentIndices = arange(2 * popSize) % popSize
+            shuffle(parentIndices)
 
         # recombine the parents using uniform crossover to generate
         # one offspring per parent pair
@@ -172,7 +324,7 @@ def ugaEvolve(popSize, bitstringLength, probMutation, fitnessFn):
 def createRestrictedFn(restriction, fn):
     """
     Takes a function fn and a restriction as input and
-    returns a function that for any input sets the variables
+    returns a function that for any input sets the attributes
     specified in the restriction to the assigned values,
     queries the function and returns the output
     """
@@ -185,9 +337,9 @@ def createRestrictedFn(restriction, fn):
     else:
         return fn
 
-def iskJuntaConstant(k, n, kJunta):
+def iskJuntaConstant(n, k, kJunta):
     """
-    is the specified kJunta over n variables constant?
+    is the specified kJunta over n attributes constant?
     """
     for x in xrange(2*2**k):
         queries = rand(1000, n) < 0.5
@@ -196,25 +348,36 @@ def iskJuntaConstant(k, n, kJunta):
             return False
     return True
 
-def exhaustivelyAugmentRestriction(restriction, learnedJuntas):
+def exhaustivelyAugmentRestriction(currentRestriction, attributesToRestrict):
     """
-    Generator function that yields the given restriction exhaustively augmented with
-    assignments of boolean values to learned but as yet unrestricted juntas
+    Generator function that exhaustively augments the currentRestriction with
+    assignments of boolean values to as yet unrestricted attributes in
+    attributesToRestrict
+    Note: attributesToRestrict is not expected to be static between yields
+
+    Parameters
+    ----------
+    currentRestriction: a list of (int, boolean) pairs
+        Each pair contains an attribute index and the value to which it is restricted
+    attributesToRestrict: set of ints
+        Attributes in need of restriction. May include attributes that
+        appear in currentRestriction (they will be ignored)
 
     """
-    indicesToRestrict = learnedJuntas - set(zip(*restriction)[0] if restriction else [])
-    if not indicesToRestrict:
-            yield restriction
+    unrestrictedAttributesToRestrict = attributesToRestrict - \
+                                   set(zip(*currentRestriction)[0] if currentRestriction else set([]))
+    if not unrestrictedAttributesToRestrict:
+            yield currentRestriction
     else:
-        indexToAdd = min(indicesToRestrict)
-        restriction.append((indexToAdd, 0))
-        for augmentedRestriction in exhaustivelyAugmentRestriction(restriction, learnedJuntas):
+        indexToAdd = min(unrestrictedAttributesToRestrict)
+        currentRestriction.append((indexToAdd, 0))
+        for augmentedRestriction in exhaustivelyAugmentRestriction(currentRestriction, attributesToRestrict):
             yield augmentedRestriction
-        restriction.pop()
-        restriction.append((indexToAdd, 1))
-        for augmentedRestriction in exhaustivelyAugmentRestriction(restriction, learnedJuntas):
+        currentRestriction.pop()
+        currentRestriction.append((indexToAdd, 1))
+        for augmentedRestriction in exhaustivelyAugmentRestriction(currentRestriction, attributesToRestrict):
             yield augmentedRestriction
-        restriction.pop()
+        currentRestriction.pop()
 
 def threeWayMajority(hypothesis1, hypothesis2, hypothesis3):
     return hypothesis1.astype("int16") + \
@@ -233,10 +396,11 @@ def recursive3WayMajority(*hypotheses):
                                 recursive3WayMajority(*hypotheses[num/3:2*num/3]),
                                 recursive3WayMajority(*hypotheses[2*num/3:]))
 
-def createBooleanFunction(name, numInputs):
+def createBooleanFn(fnName, numInputs):
     """
-    Returns an array of 2^numInputs boolean values representing
-    a boolean function over numInputs inputs
+    Returns an array of 2^numInputs boolean that give the
+    rightmost (output) column of the truth table of the
+    specified function over the specified number of inputs
 
     Parameters
     ----------
@@ -245,16 +409,16 @@ def createBooleanFunction(name, numInputs):
     numInputs : int
         The number of inputs to the boolean function
     """
-    name = name.lower()
-    if name == "and":
+    fnName = fnName.lower()
+    if fnName == "and":
         function = zeros(2**numInputs, dtype=bool)
         function[-1] = True
         return function
-    elif name == "or":
+    elif fnName == "or":
         function = ones(2**numInputs, dtype=bool)
         function[0] = False
         return function
-    elif name == "parity":
+    elif fnName == "parity":
         function = zeros(2**numInputs, dtype=int)
         temp = arange(2**numInputs)
         for i in xrange(numInputs-1, -1, -1):
@@ -262,64 +426,35 @@ def createBooleanFunction(name, numInputs):
             temp %= 2**i
         function %= 2
         function = function.astype(bool)
-    elif name == "random":
+    elif fnName == "random":
         return rand(2**numInputs)<0.5
     else:
-        raise Exception("Unknown boolean function name %s" % name)
+        raise Exception("Unknown boolean function name %s" % fnName)
     return function
 
-class MembershipQueryKJuntaOracle(object):
-    """
-    A membership query oracle whose that internally queries a k-junta
-    """
-    def __init__(self, k, n, juntaIndices, hiddenFn):
-        """
-        @param k: #juntas
-        @param n: #inputs to the k-junta
-        @param hiddenFn : an array of 2^k boolean values
-        """
-        assert k <= n
-        assert len(juntaIndices) == k
-        assert len(hiddenFn) == 2**k
-        self.n = n
-        self.k = k
-        self.juntaIndices = juntaIndices
-        self.hiddenFn = hiddenFn
-        self.numQueriesAnswered = 0
-
-        # precompute multiplicands used in the calculation of the
-        # value of hidden function given any input
-        self.multiplicands = empty((1,k), dtype="u4")
-        for i in xrange(k):
-            self.multiplicands[0, i] = 2**(k-i-1)
-
-    def query(self, queries):
-        """
-        Parameters
-        ----------
-            queries: an array of queries (each row is a single query)
-        """
-        numQueries, _ = queries.shape
-
-        booleanFunctionTableRowIndices = \
-            (queries[:, self.juntaIndices] * self.multiplicands).sum(axis=1, dtype=int)
-        results = self.hiddenFn[booleanFunctionTableRowIndices]
-
-        self.numQueriesAnswered += numQueries
-        return results
-
-
-def recoverJuntas(k, n,
-                  hiddenFnName="random",
-                  juntaIndices=None,
-                  juntaCreationRngSeed=None,
-                  majorityVotingDepth=0,
-                  algoRngSeed=None,
-                  visualize=False,
-                  ):
+def recoverJuntas(kJunta, threeWayMajorityVotingDepth=0, rngSeed=None, visualize=False, crippleFactor=0):
     """
     Set up a leaning juntas problem. Then learn the juntas.
+    Finally, check if junta recovery was successful
 
+    Parameters
+    ----------
+    kJunta : KJunta
+        The kJunta whose relevant attributes must be recovered
+    threeWayMajorityVotingDepth :
+        The number of levels of three-way majority voting to use
+        to elminiate errors a hypothesized list of juntas
+    rngSeed : int
+        The random number generator seed for the learning algorithm
+    visualize : boolean
+        If true, visualize evolutionary. Slows down the learning
+        algorithm; especially for large values of kJunta.n
+
+    crippleFactor: float between 0.0 and 1.0
+        A non zero value marginally decreases the false negative rate while
+        greatly increasing the false positive rate. Cranking up this value
+        allows one to demonstrate the usefulness of "downstream" error
+        correcting routines at low values of kJunta.n
     """
     def visualizeGen(genNum, *oneFreqs):
         numPops = len(oneFreqs)
@@ -330,8 +465,8 @@ def recoverJuntas(k, n,
             ax = subplot(2,1,i+1)
             plot(oneFreqs[i], 'b.')
             hold(True)
-            plot(juntaIndices, oneFreqs[i][juntaIndices], 'r.')
-            axis([1, n, 0, 1])
+            plot(kJunta.juntas, oneFreqs[i][kJunta.juntas], 'r.')
+            axis([1, kJunta.n, 0, 1])
             ylabel("1-Frequency")
             if i==0:
                 title("Generation = %s " % genNum)
@@ -339,62 +474,73 @@ def recoverJuntas(k, n,
         f.canvas.draw()
         f.show()
 
-    if juntaCreationRngSeed is None:
-        juntaCreationRngSeed = int(time.time())
-    seed(juntaCreationRngSeed)
+    if rngSeed is None:
+        rngSeed = int(time.time())
+    seed(rngSeed)
 
-    hiddenFnName = createBooleanFunction(hiddenFnName, k)
-
-    if juntaIndices:
-        juntaIndices = array(sorted(juntaIndices))
-    else:
-        x = arange(n)
-        shuffle(x)
-        juntaIndices = array(sorted(x[:k]))
-
-    if algoRngSeed is None:
-        algoRngSeed = int(time.time())
-    seed(algoRngSeed)
-
-    print "k-junta creation RNG seed  : %s" % juntaCreationRngSeed
-    print "Learning algorithm RNG seed: %s" %algoRngSeed
-    print "n = %s" % n
+    k = kJunta.k
+    print "k-junta creation RNG seed  : %s" % kJunta.rngSeed
+    print "Learning algorithm RNG seed: %s" % rngSeed
+    print "n = %s" % kJunta.n
     print "k = %s" % k
-    print "Hidden boolean function = %s" % ("".join(["1" if b else "0" for b in hiddenFnName[:128].tolist()]) +
-                                               ("...followed by %s bits" % locale.format("%d", 2**k-128, grouping=True)
-                                                    if len(hiddenFnName)>128 else ""))
-    print "True junta indices =   %s" % juntaIndices
+    print "Hidden boolean function = %s" % ("".join(["1" if b else "0" for b in kJunta.hiddenFn[:128].tolist()]) +
+        ("...followed by %s bits" % locale.format("%d", 2**kJunta.j-128, grouping=True) if kJunta.j > 7 else ""))
+    print "True juntas =   %s" % kJunta.juntas
 
 
     #initialize the oracle
-    oracle = MembershipQueryKJuntaOracle(k, n,
-                                         juntaIndices,
-                                         hiddenFnName)
+    oracle = MembershipQueryKJuntaOracle(kJunta)
 
     with Timer() as t:
         print "Checking for constancy..."
-        if iskJuntaConstant(k, n, oracle.query):
+        if iskJuntaConstant(kJunta.n, k, oracle.query):
             print "Function seems to be constant."
-            recoveredJuntaIndices = []
+            recoveredJuntas = []
         else:
             print "Function is NOT constant. Learning its juntas..."
             # learn the juntas
-            recoveredJuntaIndices = set()
-            learnJuntas(k, n,
+            recoveredJuntas = set()
+            learnJuntas(kJunta.n, k,
                         membershipQueryFn=oracle.query,
-                        learnedJuntas=recoveredJuntaIndices,
-                        votingTreeDepth=majorityVotingDepth,
-                        visualizer=visualizeGen if visualize else None)
-            recoveredJuntaIndices = array(sorted(recoveredJuntaIndices))
+                        learnedJuntas=recoveredJuntas,
+                        threeWayMajorityVotingDepth=threeWayMajorityVotingDepth,
+                        visualizer=visualizeGen if visualize else None,
+                        crippleFactor=crippleFactor)
+            recoveredJuntas = array(sorted(recoveredJuntas))
 
-        match = (len(juntaIndices) == len(recoveredJuntaIndices) and all(juntaIndices == recoveredJuntaIndices))
+        match = (len(kJunta.juntas) == len(recoveredJuntas) and all(kJunta.juntas == recoveredJuntas))
         print "_______________________________________________"
-        print "True junta indices      = %s" % juntaIndices
-        print "Recovered junta indices = %s" % recoveredJuntaIndices
+        print "True juntas      = %s" % kJunta.juntas
+        print "Recovered juntas = %s" % recoveredJuntas
         print "Match? : %s" %  match
         print
         print "Total number of queries = " + locale.format("%d", oracle.numQueriesAnswered, grouping=True)
     return match
+
+
+def checkAllMinimalHiddenFnsWithMInputs(m):
+    def generateAllFns(fn, idx):
+        if idx == len(fn):
+            yield fn
+        else:
+            for x in generateAllFns(fn, idx+1):
+                yield x
+            fn[idx] = 1
+            for x in generateAllFns(fn, idx+1):
+                yield x
+            fn[idx] = 0
+
+    unrecoveredFns = []
+    for fn in generateAllFns(zeros(2**m, dtype=int), 0):
+        try:
+            if not recoverJuntas(KJunta(10, juntas=m, hiddenFn=fn)):
+                unrecoveredFns.append(fn)
+        except BooleanFunctionIsNotMinimalException:
+            pass
+    print "Unrecovered Functions"
+    print "---------------------"
+    print unrecoveredFns
+
 
 class Timer:
 
@@ -413,5 +559,5 @@ class Timer:
 np.set_printoptions(linewidth=100000)
 
 if __name__ == "__main__":
-    recoverJuntas(k=7, n=100)
+    recoverJuntas(KJunta(n=100, juntas=7, hiddenFn="random"))
     raw_input("Press Enter to end")

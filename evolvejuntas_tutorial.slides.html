@@ -1743,7 +1743,7 @@ text-align: inherit;
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[2]:
+In&nbsp;[136]:
 </div>
 <div class="input_area box-flex1">
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">evolvejuntas</span> <span class="kn">as</span> <span class="nn">e</span>
@@ -1757,16 +1757,16 @@ In&nbsp;[2]:
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Recover relevant variables of the AND 6-junta over 100 variables</p>
+<p>Recover relevant variables of an AND 6-junta over 100 variables</p>
 <p>The junta are chosen at random</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[14]:
+In&nbsp;[102]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;and&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;and&quot;</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -1779,35 +1779,35 @@ In&nbsp;[14]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-k-junta creation RNG seed  : 1377846503
-Learning algorithm RNG seed: 1377846503
+k-junta creation RNG seed  : 1378148519
+Learning algorithm RNG seed: 1378148519
 n = 100
 k = 6
 Hidden boolean function = 0000000000000000000000000000000000000000000000000000000000000001
-True junta indices =   [ 5 13 20 50 75 87]
+True juntas =   [12 34 41 67 73 86]
 Checking for constancy...
 Function is NOT constant. Learning its juntas...
-======== Round 1 ========
-Elapsed wall-clock time = 4.120 seconds
-Hypothesized indices = [ 5 13 20 50 75 87]
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 2.373 seconds
+Hypothesized junta = [12 34 41 67 73 86]
 #queries = 300000
 ========================
-LEARNED juntas = [ 5 13 20 50 75 87]
-#juntas learned &gt;= k. Exiting...
+LEARNED juntas = [12 34 41 67 73 86]
+Total #juntas learned &gt;= k. Exiting...
 _______________________________________________
-True junta indices      = [ 5 13 20 50 75 87]
-Recovered junta indices = [ 5 13 20 50 75 87]
+True juntas      = [12 34 41 67 73 86]
+Recovered juntas = [12 34 41 67 73 86]
 Match? : True
 
-Total number of queries = 301000
-Elapsed wall-clock time = 4.126 seconds
+Total number of queries = 302000
+Elapsed wall-clock time = 2.378 seconds
 
 </pre>
 </div>
 </div>
 
 <div class="hbox output_area"><div class="prompt output_prompt">
-    Out[14]:</div>
+    Out[102]:</div>
 <div class="box-flex1 output_subarea output_pyout">
 
 
@@ -1825,15 +1825,15 @@ True
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Recover relevant variables of the OR 6-junta over 100 variables</p>
+<p>Recover relevant variables of an OR 6-junta over 100 variables</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[15]:
+In&nbsp;[103]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;or&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;or&quot;</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -1846,35 +1846,35 @@ In&nbsp;[15]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-k-junta creation RNG seed  : 1377846517
-Learning algorithm RNG seed: 1377846517
+k-junta creation RNG seed  : 1378148523
+Learning algorithm RNG seed: 1378148523
 n = 100
 k = 6
 Hidden boolean function = 0111111111111111111111111111111111111111111111111111111111111111
-True junta indices =   [ 1 43 47 60 70 85]
+True juntas =   [ 0 11 23 44 49 77]
 Checking for constancy...
 Function is NOT constant. Learning its juntas...
-======== Round 1 ========
-Elapsed wall-clock time = 4.136 seconds
-Hypothesized indices = [ 1 43 47 60 70 85]
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 2.338 seconds
+Hypothesized junta = [ 0 11 23 44 49 77]
 #queries = 300000
 ========================
-LEARNED juntas = [ 1 43 47 60 70 85]
-#juntas learned &gt;= k. Exiting...
+LEARNED juntas = [ 0 11 23 44 49 77]
+Total #juntas learned &gt;= k. Exiting...
 _______________________________________________
-True junta indices      = [ 1 43 47 60 70 85]
-Recovered junta indices = [ 1 43 47 60 70 85]
+True juntas      = [ 0 11 23 44 49 77]
+Recovered juntas = [ 0 11 23 44 49 77]
 Match? : True
 
-Total number of queries = 301000
-Elapsed wall-clock time = 4.140 seconds
+Total number of queries = 302000
+Elapsed wall-clock time = 2.342 seconds
 
 </pre>
 </div>
 </div>
 
 <div class="hbox output_area"><div class="prompt output_prompt">
-    Out[15]:</div>
+    Out[103]:</div>
 <div class="box-flex1 output_subarea output_pyout">
 
 
@@ -1892,15 +1892,15 @@ True
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Recover juntas of the XOR (i.e. parity) 6-junta over 100 variables</p>
+<p>Recover juntas of an XOR (i.e. parity) 6-junta over 100 variables</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[16]:
+In&nbsp;[104]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;parity&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;parity&quot;</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -1913,35 +1913,35 @@ In&nbsp;[16]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-k-junta creation RNG seed  : 1377846532
-Learning algorithm RNG seed: 1377846532
+k-junta creation RNG seed  : 1378148537
+Learning algorithm RNG seed: 1378148537
 n = 100
-k = 6
-Hidden boolean function = 0110100110010110100101100110100110010110011010010110100110010110
-True junta indices =   [ 1  5 44 55 92 94]
+k = 8
+Hidden boolean function = 01101001100101101001011001101001100101100110100101101001100101101001011001101001011010011001011001101001100101101001011001101001...followed by 128 bits
+True juntas =   [ 2  7  9 14 28 47 70 94]
 Checking for constancy...
 Function is NOT constant. Learning its juntas...
-======== Round 1 ========
-Elapsed wall-clock time = 4.169 seconds
-Hypothesized indices = [ 1  5 44 55 92 94]
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 2.351 seconds
+Hypothesized junta = [ 2  7  9 14 28 47 70 94]
 #queries = 300000
 ========================
-LEARNED juntas = [ 1  5 44 55 92 94]
-#juntas learned &gt;= k. Exiting...
+LEARNED juntas = [ 2  7  9 14 28 47 70 94]
+Total #juntas learned &gt;= k. Exiting...
 _______________________________________________
-True junta indices      = [ 1  5 44 55 92 94]
-Recovered junta indices = [ 1  5 44 55 92 94]
+True juntas      = [ 2  7  9 14 28 47 70 94]
+Recovered juntas = [ 2  7  9 14 28 47 70 94]
 Match? : True
 
-Total number of queries = 301000
-Elapsed wall-clock time = 4.175 seconds
+Total number of queries = 302000
+Elapsed wall-clock time = 2.356 seconds
 
 </pre>
 </div>
 </div>
 
 <div class="hbox output_area"><div class="prompt output_prompt">
-    Out[16]:</div>
+    Out[104]:</div>
 <div class="box-flex1 output_subarea output_pyout">
 
 
@@ -1965,10 +1965,10 @@ True
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[18]:
+In&nbsp;[97]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -1981,48 +1981,45 @@ In&nbsp;[18]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-k-junta creation RNG seed  : 1377674915
-Learning algorithm RNG seed: 1377846595
+k-junta creation RNG seed  : 1378148233
+Learning algorithm RNG seed: 1378148233
 n = 100
 k = 6
-Hidden boolean function = 0001000100100011101001010100100101111000000000101101101011110110
-True junta indices =   [11 22 33 55 85 90]
+Hidden boolean function = 1001110111100111001101001001011110010010011001011001100111101001
+True juntas =   [ 9 11 21 48 66 78]
 Checking for constancy...
 Function is NOT constant. Learning its juntas...
-======== Round 1 ========
-Elapsed wall-clock time = 4.212 seconds
-Hypothesized indices = [11 22 33 55 85]
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 2.357 seconds
+Hypothesized junta = [ 9 21 48 78]
 #queries = 300000
 ========================
-LEARNED juntas = [11 22 33 55 85]
+LEARNED juntas = [ 9 21 48 78]
 Checking for constancy under the following restriction 
-[(11, 0), (22, 0), (33, 0), (55, 0), (85, 0)]
-Function seems constant under the restriction. Moving on...
-Checking for constancy under the following restriction 
-[(11, 0), (22, 0), (33, 0), (55, 0), (85, 1)]
+[(9, 0), (21, 0), (48, 0), (78, 0)]
 Function is NOT constant. Learning its juntas under the restriction...
-	======== Round 1 ========
-	Elapsed wall-clock time = 4.117 seconds
-	Hypothesized indices = [90]
+	======== Evolving Voter 1 ========
+	Elapsed wall-clock time = 2.365 seconds
+	Hypothesized junta = [11 66]
 	#queries = 300000
 	========================
-	LEARNED juntas = [90]
-	#juntas learned &gt;= k. Exiting...
-#juntas learned &gt;= k. Exiting...
+	LEARNED juntas = [11 66]
+	Total #juntas learned &gt;= k. Exiting...
+Total #juntas learned &gt;= k. Exiting...
 _______________________________________________
-True junta indices      = [11 22 33 55 85 90]
-Recovered junta indices = [11 22 33 55 85 90]
+True juntas      = [ 9 11 21 48 66 78]
+Recovered juntas = [ 9 11 21 48 66 78]
 Match? : True
 
-Total number of queries = 606000
-Elapsed wall-clock time = 8.344 seconds
+Total number of queries = 604000
+Elapsed wall-clock time = 4.730 seconds
 
 </pre>
 </div>
 </div>
 
 <div class="hbox output_area"><div class="prompt output_prompt">
-    Out[18]:</div>
+    Out[97]:</div>
 <div class="box-flex1 output_subarea output_pyout">
 
 
@@ -2042,18 +2039,17 @@ True
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Use the junta creation RNG seed from the previous run to create a 6-junta identical the previous one</p>
 <ul>
-<li>The k-junta in both runs are the same but note the difference in the runs</li>
-<li>The algorithm has its own random seed, which can be set using the optional parameter <code>algoRngSeed</code></li>
+<li>The k-junta in both runs are the same; note that they are learned differently</li>
 </ul>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[19]:
+In&nbsp;[100]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
-                <span class="n">juntaCreationRngSeed</span><span class="o">=</span><span class="mi">1377674915</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> 
+    <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148233</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -2066,48 +2062,55 @@ In&nbsp;[19]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-k-junta creation RNG seed  : 1377674915
-Learning algorithm RNG seed: 1377846626
+k-junta creation RNG seed  : 1378148233
+Learning algorithm RNG seed: 1378148302
 n = 100
 k = 6
-Hidden boolean function = 0001000100100011101001010100100101111000000000101101101011110110
-True junta indices =   [11 22 33 55 85 90]
+Hidden boolean function = 1001110111100111001101001001011110010010011001011001100111101001
+True juntas =   [ 9 11 21 48 66 78]
 Checking for constancy...
 Function is NOT constant. Learning its juntas...
-======== Round 1 ========
-Elapsed wall-clock time = 4.158 seconds
-Hypothesized indices = [11 22 55 85]
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 2.311 seconds
+Hypothesized junta = [ 9 21 48]
 #queries = 300000
 ========================
-LEARNED juntas = [11 22 55 85]
+LEARNED juntas = [ 9 21 48]
 Checking for constancy under the following restriction 
-[(11, 0), (22, 0), (55, 0), (85, 0)]
-Function seems constant under the restriction. Moving on...
-Checking for constancy under the following restriction 
-[(11, 0), (22, 0), (55, 0), (85, 1)]
+[(9, 0), (21, 0), (48, 0)]
 Function is NOT constant. Learning its juntas under the restriction...
-	======== Round 1 ========
-	Elapsed wall-clock time = 4.167 seconds
-	Hypothesized indices = [33 90]
+	======== Evolving Voter 1 ========
+	Elapsed wall-clock time = 2.371 seconds
+	Hypothesized junta = [11 78]
 	#queries = 300000
 	========================
-	LEARNED juntas = [33 90]
-	#juntas learned &gt;= k. Exiting...
-#juntas learned &gt;= k. Exiting...
+	LEARNED juntas = [11 78]
+	Checking for constancy under the following restriction 
+	[(9, 0), (21, 0), (48, 0), (11, 0), (78, 0)]
+	Function is NOT constant. Learning its juntas under the restriction...
+		======== Evolving Voter 1 ========
+		Elapsed wall-clock time = 2.343 seconds
+		Hypothesized junta = [66]
+		#queries = 300000
+		========================
+		LEARNED juntas = [66]
+		Total #juntas learned &gt;= k. Exiting...
+	Total #juntas learned &gt;= k. Exiting...
+Total #juntas learned &gt;= k. Exiting...
 _______________________________________________
-True junta indices      = [11 22 33 55 85 90]
-Recovered junta indices = [11 22 33 55 85 90]
+True juntas      = [ 9 11 21 48 66 78]
+Recovered juntas = [ 9 11 21 48 66 78]
 Match? : True
 
-Total number of queries = 610000
-Elapsed wall-clock time = 8.345 seconds
+Total number of queries = 906000
+Elapsed wall-clock time = 7.037 seconds
 
 </pre>
 </div>
 </div>
 
 <div class="hbox output_area"><div class="prompt output_prompt">
-    Out[19]:</div>
+    Out[100]:</div>
 <div class="box-flex1 output_subarea output_pyout">
 
 
@@ -2125,17 +2128,16 @@ True
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>It takes three rounds of evolution to recover the relevant variables of the 6-junta generated by the RNG seed <code>1377670822</code></p>
-<p>The maximum possible rounds of evolution is <span class="math">\(k\)</span></p>
+<p>The rngSeed used by the learning algorithm is distinct from the one that may be used during k-junta creation. The following exactly recreates the last run</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[20]:
+In&nbsp;[101]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
-                <span class="n">juntaCreationRngSeed</span><span class="o">=</span><span class="mi">1377510322</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> 
+    <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148233</span><span class="p">),</span> <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148302</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2148,60 +2150,55 @@ In&nbsp;[20]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-k-junta creation RNG seed  : 1377510322
-Learning algorithm RNG seed: 1377846685
-n = 33
+k-junta creation RNG seed  : 1378148233
+Learning algorithm RNG seed: 1378148302
+n = 100
 k = 6
-Hidden boolean function = 1101010010011110100101011011111001110111011101001100101011110110
-True junta indices =   [ 1 12 14 20 24 30]
+Hidden boolean function = 1001110111100111001101001001011110010010011001011001100111101001
+True juntas =   [ 9 11 21 48 66 78]
 Checking for constancy...
 Function is NOT constant. Learning its juntas...
-======== Round 1 ========
-Elapsed wall-clock time = 2.777 seconds
-Hypothesized indices = [ 1 14 20 30]
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 2.338 seconds
+Hypothesized junta = [ 9 21 48]
 #queries = 300000
 ========================
-LEARNED juntas = [ 1 14 20 30]
+LEARNED juntas = [ 9 21 48]
 Checking for constancy under the following restriction 
-[(1, 0), (14, 0), (20, 0), (30, 0)]
+[(9, 0), (21, 0), (48, 0)]
 Function is NOT constant. Learning its juntas under the restriction...
-	======== Round 1 ========
-	Elapsed wall-clock time = 2.809 seconds
-	Hypothesized indices = [24]
+	======== Evolving Voter 1 ========
+	Elapsed wall-clock time = 2.393 seconds
+	Hypothesized junta = [11 78]
 	#queries = 300000
 	========================
-	LEARNED juntas = [24]
+	LEARNED juntas = [11 78]
 	Checking for constancy under the following restriction 
-	[(1, 0), (14, 0), (20, 0), (30, 0), (24, 0)]
-	Function seems constant under the restriction. Moving on...
-	Checking for constancy under the following restriction 
-	[(1, 0), (14, 0), (20, 0), (30, 0), (24, 1)]
-	Function seems constant under the restriction. Moving on...
-Checking for constancy under the following restriction 
-[(1, 0), (14, 0), (20, 0), (30, 1), (24, 0)]
-Function is NOT constant. Learning its juntas under the restriction...
-	======== Round 1 ========
-	Elapsed wall-clock time = 2.855 seconds
-	Hypothesized indices = [12]
-	#queries = 300000
-	========================
-	LEARNED juntas = [12]
-	#juntas learned &gt;= k. Exiting...
-#juntas learned &gt;= k. Exiting...
+	[(9, 0), (21, 0), (48, 0), (11, 0), (78, 0)]
+	Function is NOT constant. Learning its juntas under the restriction...
+		======== Evolving Voter 1 ========
+		Elapsed wall-clock time = 2.373 seconds
+		Hypothesized junta = [66]
+		#queries = 300000
+		========================
+		LEARNED juntas = [66]
+		Total #juntas learned &gt;= k. Exiting...
+	Total #juntas learned &gt;= k. Exiting...
+Total #juntas learned &gt;= k. Exiting...
 _______________________________________________
-True junta indices      = [ 1 12 14 20 24 30]
-Recovered junta indices = [ 1 12 14 20 24 30]
+True juntas      = [ 9 11 21 48 66 78]
+Recovered juntas = [ 9 11 21 48 66 78]
 Match? : True
 
-Total number of queries = 911000
-Elapsed wall-clock time = 8.458 seconds
+Total number of queries = 906000
+Elapsed wall-clock time = 7.115 seconds
 
 </pre>
 </div>
 </div>
 
 <div class="hbox output_area"><div class="prompt output_prompt">
-    Out[20]:</div>
+    Out[101]:</div>
 <div class="box-flex1 output_subarea output_pyout">
 
 
@@ -2219,7 +2216,7 @@ True
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>To visualize how the instance gets solved use <code>visualize=True</code></p>
+<p>To visualize the evolving populations use <code>visualize=True</code></p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
@@ -2227,9 +2224,7 @@ True
 In&nbsp;[]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
-                <span class="n">juntaCreationRngSeed</span><span class="o">=</span><span class="mi">1377510322</span><span class="p">,</span> 
-                <span class="n">algoRngSeed</span><span class="o">=</span><span class="mi">1377510786</span><span class="p">,</span> <span class="n">visualize</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJuntak</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> <span class="n">visualize</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -2237,20 +2232,34 @@ In&nbsp;[]:
 
 </div>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Visualization becomes unwieldy at large values of <span class="math">\(n\)</span>. So use this feature carefully.</p>
+<p>A snapshot is shown below.</p>
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<div>
+<center>
+    
+<img src="alphaBetaEvolution.png"/>
+</center>
+</div>
+
+</div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Visualization becomes unwieldy for <span class="math">\(n\)</span> &gt; 1000</p>
 </div></section>
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Increasing <span class="math">\(k\)</span> to 8</p>
+<p><span class="math">\(k\)</span>, the number of juntas &quot;advertised&quot; by the k-junta, defaults to the true number of juntas</p>
+<p>A different advertized <span class="math">\(k\)</span> value can be set as shown below</p>
+<p>Values of <span class="math">\(k\)</span> that are higher than the true number of juntas will increase the running time and number of queries</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[22]:
+In&nbsp;[106]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -2263,45 +2272,135 @@ In&nbsp;[22]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-k-junta creation RNG seed  : 1377510917
-Learning algorithm RNG seed: 1377846780
+k-junta creation RNG seed  : 1378148731
+Learning algorithm RNG seed: 1378148731
+n = 100
+k = 4
+Hidden boolean function = 10001001
+True juntas =   [ 2 23 42]
+Checking for constancy...
+Function is NOT constant. Learning its juntas...
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 2.290 seconds
+Hypothesized junta = [ 2 23 42]
+#queries = 300000
+========================
+LEARNED juntas = [ 2 23 42]
+Checking for constancy under the following restriction 
+[(2, 0), (23, 0), (42, 0)]
+Function seems constant under the restriction. Moving on...
+Checking for constancy under the following restriction 
+[(2, 0), (23, 0), (42, 1)]
+Function seems constant under the restriction. Moving on...
+Checking for constancy under the following restriction 
+[(2, 0), (23, 1), (42, 0)]
+Function seems constant under the restriction. Moving on...
+Checking for constancy under the following restriction 
+[(2, 0), (23, 1), (42, 1)]
+Function seems constant under the restriction. Moving on...
+Checking for constancy under the following restriction 
+[(2, 1), (23, 0), (42, 0)]
+Function seems constant under the restriction. Moving on...
+Checking for constancy under the following restriction 
+[(2, 1), (23, 0), (42, 1)]
+Function seems constant under the restriction. Moving on...
+Checking for constancy under the following restriction 
+[(2, 1), (23, 1), (42, 0)]
+Function seems constant under the restriction. Moving on...
+Checking for constancy under the following restriction 
+[(2, 1), (23, 1), (42, 1)]
+Function seems constant under the restriction. Moving on...
+_______________________________________________
+True juntas      = [ 2 23 42]
+Recovered juntas = [ 2 23 42]
+Match? : True
+
+Total number of queries = 334000
+Elapsed wall-clock time = 2.344 seconds
+
+</pre>
+</div>
+</div>
+
+<div class="hbox output_area"><div class="prompt output_prompt">
+    Out[106]:</div>
+<div class="box-flex1 output_subarea output_pyout">
+
+
+<pre>
+True
+</pre>
+
+</div>
+</div>
+
+</div>
+</div>
+
+</div></section>
+    </section><section>
+    <section>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Increasing the number of juntas to 8</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">
+In&nbsp;[107]:
+</div>
+<div class="input_area box-flex1">
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+
+<div class="vbox output_wrapper">
+<div class="output vbox">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_stream output_stdout">
+<pre>
+k-junta creation RNG seed  : 1378148759
+Learning algorithm RNG seed: 1378148759
 n = 100
 k = 8
-Hidden boolean function = 00001011101010101011001110110001111000111001000001011000111011001000001010010001110110011101001111100000101101010010001011101010...followed by 128 bits
-True junta indices =   [ 0  3  6 19 32 35 78 95]
+Hidden boolean function = 10010001111110110101101100101111111011010111100110111011111101111001100001010110100000001111110100100000111001111110110101001111...followed by 128 bits
+True juntas =   [ 3  7  9 21 67 74 85 91]
 Checking for constancy...
 Function is NOT constant. Learning its juntas...
-======== Round 1 ========
-Elapsed wall-clock time = 4.142 seconds
-Hypothesized indices = [ 0  6 32 35 78 95]
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 2.495 seconds
+Hypothesized junta = [ 7 21 67 74 85 91]
 #queries = 300000
 ========================
-LEARNED juntas = [ 0  6 32 35 78 95]
+LEARNED juntas = [ 7 21 67 74 85 91]
 Checking for constancy under the following restriction 
-[(0, 0), (6, 0), (32, 0), (35, 0), (78, 0), (95, 0)]
+[(7, 0), (21, 0), (67, 0), (74, 0), (85, 0), (91, 0)]
 Function is NOT constant. Learning its juntas under the restriction...
-	======== Round 1 ========
-	Elapsed wall-clock time = 4.138 seconds
-	Hypothesized indices = [ 3 19]
+	======== Evolving Voter 1 ========
+	Elapsed wall-clock time = 2.435 seconds
+	Hypothesized junta = [3 9]
 	#queries = 300000
 	========================
-	LEARNED juntas = [ 3 19]
-	#juntas learned &gt;= k. Exiting...
-#juntas learned &gt;= k. Exiting...
+	LEARNED juntas = [3 9]
+	Total #juntas learned &gt;= k. Exiting...
+Total #juntas learned &gt;= k. Exiting...
 _______________________________________________
-True junta indices      = [ 0  3  6 19 32 35 78 95]
-Recovered junta indices = [ 0  3  6 19 32 35 78 95]
+True juntas      = [ 3  7  9 21 67 74 85 91]
+Recovered juntas = [ 3  7  9 21 67 74 85 91]
 Match? : True
 
-Total number of queries = 602000
-Elapsed wall-clock time = 8.288 seconds
+Total number of queries = 604000
+Elapsed wall-clock time = 4.939 seconds
 
 </pre>
 </div>
 </div>
 
 <div class="hbox output_area"><div class="prompt output_prompt">
-    Out[22]:</div>
+    Out[107]:</div>
 <div class="box-flex1 output_subarea output_pyout">
 
 
@@ -2319,16 +2418,16 @@ True
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Increasing <span class="math">\(n\)</span> to 1,000</p>
+<p>Increasing <span class="math">\(n\)</span> to 1000</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[23]:
+In&nbsp;[108]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
-                <span class="n">juntaCreationRngSeed</span><span class="o">=</span><span class="mi">1377510917</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
+    <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148759</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -2341,45 +2440,45 @@ In&nbsp;[23]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-k-junta creation RNG seed  : 1377510917
-Learning algorithm RNG seed: 1377846805
+k-junta creation RNG seed  : 1378148759
+Learning algorithm RNG seed: 1378148792
 n = 1000
 k = 8
-Hidden boolean function = 00001011101010101011001110110001111000111001000001011000111011001000001010010001110110011101001111100000101101010010001011101010...followed by 128 bits
-True junta indices =   [  2  86 272 410 495 646 836 894]
+Hidden boolean function = 10010001111110110101101100101111111011010111100110111011111101111001100001010110100000001111110100100000111001111110110101001111...followed by 128 bits
+True juntas =   [ 36  90 288 645 751 896 917 968]
 Checking for constancy...
 Function is NOT constant. Learning its juntas...
-======== Round 1 ========
-Elapsed wall-clock time = 21.933 seconds
-Hypothesized indices = [  2 495 646 836 894]
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 20.070 seconds
+Hypothesized junta = [ 90 288 751 896 917 968]
 #queries = 300000
 ========================
-LEARNED juntas = [  2 495 646 836 894]
+LEARNED juntas = [ 90 288 751 896 917 968]
 Checking for constancy under the following restriction 
-[(2, 0), (495, 0), (646, 0), (836, 0), (894, 0)]
+[(90, 0), (288, 0), (751, 0), (896, 0), (917, 0), (968, 0)]
 Function is NOT constant. Learning its juntas under the restriction...
-	======== Round 1 ========
-	Elapsed wall-clock time = 22.062 seconds
-	Hypothesized indices = [ 86 272 410]
+	======== Evolving Voter 1 ========
+	Elapsed wall-clock time = 20.017 seconds
+	Hypothesized junta = [ 36 645]
 	#queries = 300000
 	========================
-	LEARNED juntas = [ 86 272 410]
-	#juntas learned &gt;= k. Exiting...
-#juntas learned &gt;= k. Exiting...
+	LEARNED juntas = [ 36 645]
+	Total #juntas learned &gt;= k. Exiting...
+Total #juntas learned &gt;= k. Exiting...
 _______________________________________________
-True junta indices      = [  2  86 272 410 495 646 836 894]
-Recovered junta indices = [  2  86 272 410 495 646 836 894]
+True juntas      = [ 36  90 288 645 751 896 917 968]
+Recovered juntas = [ 36  90 288 645 751 896 917 968]
 Match? : True
 
-Total number of queries = 602000
-Elapsed wall-clock time = 44.048 seconds
+Total number of queries = 604000
+Elapsed wall-clock time = 40.140 seconds
 
 </pre>
 </div>
 </div>
 
 <div class="hbox output_area"><div class="prompt output_prompt">
-    Out[23]:</div>
+    Out[108]:</div>
 <div class="box-flex1 output_subarea output_pyout">
 
 
@@ -2397,16 +2496,17 @@ True
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>If we keep increasing <span class="math">\(n\)</span> there comes a point where the algorithm begins to fail (noticibly frequently)</p>
+<p>If <span class="math">\(n\)</span> keeps increasing, there comes a point at which the algorithm starts failing.</p>
+<p>No sign of failure at <span class="math">\(n\)</span>=5000.</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[28]:
+In&nbsp;[109]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">8000</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
-                <span class="n">juntaCreationRngSeed</span><span class="o">=</span><span class="mi">1377510917</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
+    <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148759</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -2419,45 +2519,113 @@ In&nbsp;[28]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-k-junta creation RNG seed  : 1377510917
-Learning algorithm RNG seed: 1377850887
-n = 8000
+k-junta creation RNG seed  : 1378148759
+Learning algorithm RNG seed: 1378148874
+n = 5000
 k = 8
-Hidden boolean function = 00001011101010101011001110110001111000111001000001011000111011001000001010010001110110011101001111100000101101010010001011101010...followed by 128 bits
-True junta indices =   [ 376  590 2296 2849 3534 4537 7089 7545]
+Hidden boolean function = 10010001111110110101101100101111111011010111100110111011111101111001100001010110100000001111110100100000111001111110110101001111...followed by 128 bits
+True juntas =   [  72  594 2405 2644 3117 3159 4222 4371]
 Checking for constancy...
 Function is NOT constant. Learning its juntas...
-======== Round 1 ========
-Elapsed wall-clock time = 157.571 seconds
-Hypothesized indices = [ 376 2849 3534 4537 7089]
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 100.111 seconds
+Hypothesized junta = [  72  594 2405 2644 3117 3159 4222 4371]
 #queries = 300000
 ========================
-LEARNED juntas = [ 376 2849 3534 4537 7089]
-Checking for constancy under the following restriction 
-[(376, 0), (2849, 0), (3534, 0), (4537, 0), (7089, 0)]
-Function is NOT constant. Learning its juntas under the restriction...
-	======== Round 1 ========
-	Elapsed wall-clock time = 158.097 seconds
-	Hypothesized indices = [ 590 2296 6530]
-	#queries = 300000
-	========================
-	LEARNED juntas = [ 590 2296 6530]
-	#juntas learned &gt;= k. Exiting...
-#juntas learned &gt;= k. Exiting...
+LEARNED juntas = [  72  594 2405 2644 3117 3159 4222 4371]
+Total #juntas learned &gt;= k. Exiting...
 _______________________________________________
-True junta indices      = [ 376  590 2296 2849 3534 4537 7089 7545]
-Recovered junta indices = [ 376  590 2296 2849 3534 4537 6530 7089]
-Match? : False
+True juntas      = [  72  594 2405 2644 3117 3159 4222 4371]
+Recovered juntas = [  72  594 2405 2644 3117 3159 4222 4371]
+Match? : True
 
-Total number of queries = 602000
-Elapsed wall-clock time = 316.028 seconds
+Total number of queries = 302000
+Elapsed wall-clock time = 100.231 seconds
 
 </pre>
 </div>
 </div>
 
 <div class="hbox output_area"><div class="prompt output_prompt">
-    Out[28]:</div>
+    Out[109]:</div>
+<div class="box-flex1 output_subarea output_pyout">
+
+
+<pre>
+True
+</pre>
+
+</div>
+</div>
+
+</div>
+</div>
+
+</div></section>
+    </section><section>
+    <section>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>On the hidden function represented by <code>rngSeed</code>=1378148759, I had to increase <span class="math">\(n\)</span> to 40,000 before I got the algorithm to fail.</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">
+In&nbsp;[112]:
+</div>
+<div class="input_area box-flex1">
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">40000</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span>
+    <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148759</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+
+<div class="vbox output_wrapper">
+<div class="output vbox">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_stream output_stdout">
+<pre>
+k-junta creation RNG seed  : 1378148759
+Learning algorithm RNG seed: 1378151500
+n = 40000
+k = 8
+Hidden boolean function = 10010001111110110101101100101111111011010111100110111011111101111001100001010110100000001111110100100000111001111110110101001111...followed by 128 bits
+True juntas =   [ 6497 16688 17872 18141 19042 19272 19296 37656]
+Checking for constancy...
+Function is NOT constant. Learning its juntas...
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 807.361 seconds
+Hypothesized junta = [16688 17872 19042 19272 19296 27951 37656]
+#queries = 300000
+========================
+LEARNED juntas = [16688 17872 19042 19272 19296 27951 37656]
+Checking for constancy under the following restriction 
+[(16688, 0), (17872, 0), (19042, 0), (19272, 0), (19296, 0), (27951, 0), (37656, 0)]
+Function is NOT constant. Learning its juntas under the restriction...
+	======== Evolving Voter 1 ========
+	Elapsed wall-clock time = 798.587 seconds
+	Hypothesized junta = [ 6497 18141]
+	#queries = 300000
+	========================
+	LEARNED juntas = [ 6497 18141]
+	Total #juntas learned &gt;= k. Exiting...
+Total #juntas learned &gt;= k. Exiting...
+_______________________________________________
+True juntas      = [ 6497 16688 17872 18141 19042 19272 19296 37656]
+Recovered juntas = [ 6497 16688 17872 18141 19042 19272 19296 27951 37656]
+Match? : False
+
+Total number of queries = 604000
+Elapsed wall-clock time = 1607.472 seconds
+
+</pre>
+</div>
+</div>
+
+<div class="hbox output_area"><div class="prompt output_prompt">
+    Out[112]:</div>
 <div class="box-flex1 output_subarea output_pyout">
 
 
@@ -2475,23 +2643,22 @@ False
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>When this point is reached, increasing the recursive 3-way majority voting depth by 1 (default is 0) fixes the issue for the value of <span class="math">\(n\)</span>, and values much larger, while trebling the rounds of evolution.</p>
-<p>A run with <code>majorityVotingDepth=1</code>.</p>
-<p>Note:</p>
+<p>Failure at lower values of <span class="math">\(n\)</span> can be induced by &quot;crippling&quot; the algorithm.</p>
+<p>There are various ways to reduce the effectivity of the algorithm. One of the simplest is to adjust the mutation rate (0.005 per bit by default) downward.</p>
 <ul>
-<li>The hypothesizing of erroneous indices 12820, 14583, 14870, 5338<br /></li>
-<li>That 3-way majority voting eliminates these errors.</li>
+<li><code>crippleFactor</code>==1 =&gt; no mutation (mutation rate = 0.0)</li>
+<li><code>crippleFactor</code>==0 =&gt; no change (mutation rate = 0.005)</li>
 </ul>
+<p>Reducing the mutation rate results in a higher false positive rate and a lower false negative rate. As <span class="math">\(n\)</span> increases the chance of failure is determined by the false positive rate. Increasing this rate effectively cripples the algorithm.</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[29]:
+In&nbsp;[113]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
-                <span class="n">majorityVotingDepth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
-                <span class="n">juntaCreationRngSeed</span><span class="o">=</span><span class="mi">1377510917</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
+    <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148759</span><span class="p">),</span> <span class="n">crippleFactor</span><span class="o">=</span><span class="mf">0.65</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -2504,61 +2671,128 @@ In&nbsp;[29]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-k-junta creation RNG seed  : 1377510917
-Learning algorithm RNG seed: 1377851206
-n = 20000
+k-junta creation RNG seed  : 1378148759
+Learning algorithm RNG seed: 1378153246
+n = 100
 k = 8
-Hidden boolean function = 00001011101010101011001110110001111000111001000001011000111011001000001010010001110110011101001111100000101101010010001011101010...followed by 128 bits
-True junta indices =   [ 2643  6499  7334 13683 14323 14583 14765 14902]
+Hidden boolean function = 10010001111110110101101100101111111011010111100110111011111101111001100001010110100000001111110100100000111001111110110101001111...followed by 128 bits
+True juntas =   [ 3  7  9 21 67 74 85 91]
 Checking for constancy...
 Function is NOT constant. Learning its juntas...
-======== Round 1 ========
-Elapsed wall-clock time = 400.968 seconds
-Hypothesized indices = [ 2643 14323 14583 14765 14902]
-#queries = 300000
-======== Round 2 ========
-Elapsed wall-clock time = 411.907 seconds
-Hypothesized indices = [ 2643 14323 14583 14765 14902]
-#queries = 300000
-======== Round 3 ========
-Elapsed wall-clock time = 440.649 seconds
-Hypothesized indices = [ 2643 12820 14323 14583 14765 14870 14902]
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 2.304 seconds
+Hypothesized junta = [ 3  9 21 67 74 85 91]
 #queries = 300000
 ========================
-LEARNED juntas = [ 2643 14323 14583 14765 14902]
+LEARNED juntas = [ 3  9 21 67 74 85 91]
 Checking for constancy under the following restriction 
-[(2643, 0), (14323, 0), (14583, 0), (14765, 0), (14902, 0)]
+[(3, 0), (9, 0), (21, 0), (67, 0), (74, 0), (85, 0), (91, 0)]
 Function is NOT constant. Learning its juntas under the restriction...
-	======== Round 1 ========
-	Elapsed wall-clock time = 408.465 seconds
-	Hypothesized indices = [ 6499  7334 13683]
-	#queries = 300000
-	======== Round 2 ========
-	Elapsed wall-clock time = 400.461 seconds
-	Hypothesized indices = [ 5338  6499  7334 13683]
-	#queries = 300000
-	======== Round 3 ========
-	Elapsed wall-clock time = 399.263 seconds
-	Hypothesized indices = [ 6499  7334 13683]
+	======== Evolving Voter 1 ========
+	Elapsed wall-clock time = 2.364 seconds
+	Hypothesized junta = [4 7]
 	#queries = 300000
 	========================
-	LEARNED juntas = [ 6499  7334 13683]
-	#juntas learned &gt;= k. Exiting...
-#juntas learned &gt;= k. Exiting...
+	LEARNED juntas = [4 7]
+	Total #juntas learned &gt;= k. Exiting...
+Total #juntas learned &gt;= k. Exiting...
 _______________________________________________
-True junta indices      = [ 2643  6499  7334 13683 14323 14583 14765 14902]
-Recovered junta indices = [ 2643  6499  7334 13683 14323 14583 14765 14902]
-Match? : True
+True juntas      = [ 3  7  9 21 67 74 85 91]
+Recovered juntas = [ 3  4  7  9 21 67 74 85 91]
+Match? : False
 
-Total number of queries = 1802000
-Elapsed wall-clock time = 2462.760 seconds
+Total number of queries = 604000
+Elapsed wall-clock time = 4.689 seconds
 
 </pre>
 </div>
 </div>
 
 <div class="hbox output_area"><div class="prompt output_prompt">
-    Out[29]:</div>
+    Out[113]:</div>
+<div class="box-flex1 output_subarea output_pyout">
+
+
+<pre>
+False
+</pre>
+
+</div>
+</div>
+
+</div>
+</div>
+
+</div></section>
+    </section><section>
+    <section>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Crippling the algorithm allows one to empirically evaluate its error correcting capabilities in acceptable timeframes</p>
+<p>I should mention that the posted algorithm is &quot;out of the box crippled&quot;. Which is to say that there are very simple tricks one can use to boost recovery rates much beyond what's achievable with <code>crippleFactor</code>=0 (the default). These tricks have deliberately not been implemented because they would complicate the algorithm beyond what's absolutely necessary.</p>
+</div></section>
+    </section><section>
+    <section>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now that we can get the algorithm to fail for small values of <span class="math">\(n\)</span>, its time to look at how error correction works.</p>
+<p>Here's a run with <code>threWayMajorityVotingDepth=1</code> (default is 0) that (with high probability) fixes errors for <span class="math">\(n\)</span>=100 while (on average) trebling the time and queries required</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">
+In&nbsp;[114]:
+</div>
+<div class="input_area box-flex1">
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
+    <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148759</span><span class="p">),</span> <span class="n">threeWayMajorityVotingDepth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">crippleFactor</span><span class="o">=</span><span class="mf">0.65</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+
+<div class="vbox output_wrapper">
+<div class="output vbox">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_stream output_stdout">
+<pre>
+k-junta creation RNG seed  : 1378148759
+Learning algorithm RNG seed: 1378153315
+n = 100
+k = 8
+Hidden boolean function = 10010001111110110101101100101111111011010111100110111011111101111001100001010110100000001111110100100000111001111110110101001111...followed by 128 bits
+True juntas =   [ 3  7  9 21 67 74 85 91]
+Checking for constancy...
+Function is NOT constant. Learning its juntas...
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 2.359 seconds
+Hypothesized junta = [ 7  9 21 67 74 85 91]
+#queries = 300000
+======== Evolving Voter 2 ========
+Elapsed wall-clock time = 2.332 seconds
+Hypothesized junta = [ 3  7  9 21 67 74 85 91]
+#queries = 300000
+======== Evolving Voter 3 ========
+Elapsed wall-clock time = 2.324 seconds
+Hypothesized junta = [ 3  9 21 37 67 74 85 91]
+#queries = 300000
+========================
+LEARNED juntas = [ 3  7  9 21 67 74 85 91]
+Total #juntas learned &gt;= k. Exiting...
+_______________________________________________
+True juntas      = [ 3  7  9 21 67 74 85 91]
+Recovered juntas = [ 3  7  9 21 67 74 85 91]
+Match? : True
+
+Total number of queries = 904000
+Elapsed wall-clock time = 7.021 seconds
+
+</pre>
+</div>
+</div>
+
+<div class="hbox output_area"><div class="prompt output_prompt">
+    Out[114]:</div>
 <div class="box-flex1 output_subarea output_pyout">
 
 
@@ -2576,23 +2810,414 @@ True
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>For any hidden function <span class="math">\(h\)</span>, any <span class="math">\(\epsilon&gt;0\)</span>, and any <span class="math">\(k\)</span>, if the algorithm with <code>majorityVotingDepth=0</code> recovers, with probability of error &lt; <span class="math">\(\epsilon\)</span>, the relevant variables of a <span class="math">\(k\)</span>-junta over <span class="math">\(k+1\)</span> variables with hidden function <span class="math">\(h\)</span>, then for any value of <span class="math">\(n\)</span>, there is a value of <code>majorityVotingDepth</code> for which the algorithm will recover, with probability of error &lt; <span class="math">\(\epsilon\)</span>, the relevant variables of the <span class="math">\(k\)</span>-junta over <span class="math">\(n\)</span> variables with hidden function <span class="math">\(h\)</span>.</p>
-<p>So, for any given error tolerance, if a <span class="math">\(k\)</span>-junta with some hidden function <span class="math">\(h\)</span> can be solved for some small value of <span class="math">\(n\)</span>, then any <span class="math">\(k\)</span> junta with hidden function <span class="math">\(h\)</span> can be solved efficiently: in <span class="math">\(O(n \textrm{ polylog}(n))\)</span> time and <span class="math">\(O(\textrm{ polylog}(n))\)</span> queries to be precise.</p>
+<p><code>threeWayMajorityVotingDepth</code>=1 continues to be effective even when <span class="math">\(n\)</span> is increased to 1000</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">
+In&nbsp;[115]:
+</div>
+<div class="input_area box-flex1">
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
+    <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148759</span><span class="p">),</span> <span class="n">threeWayMajorityVotingDepth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">crippleFactor</span><span class="o">=</span><span class="mf">0.65</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+
+<div class="vbox output_wrapper">
+<div class="output vbox">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_stream output_stdout">
+<pre>
+k-junta creation RNG seed  : 1378148759
+Learning algorithm RNG seed: 1378153402
+n = 1000
+k = 8
+Hidden boolean function = 10010001111110110101101100101111111011010111100110111011111101111001100001010110100000001111110100100000111001111110110101001111...followed by 128 bits
+True juntas =   [ 36  90 288 645 751 896 917 968]
+Checking for constancy...
+Function is NOT constant. Learning its juntas...
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 20.015 seconds
+Hypothesized junta = [ 90 225 227 288 751 896 917 953 968]
+#queries = 300000
+======== Evolving Voter 2 ========
+Elapsed wall-clock time = 19.876 seconds
+Hypothesized junta = [ 36  47  81  86  90 288 347 596 638 645 751 758 830 861 917 968]
+#queries = 300000
+======== Evolving Voter 3 ========
+Elapsed wall-clock time = 19.730 seconds
+Hypothesized junta = [ 36  66  86  90 288 342 424 432 723 751 808 892 896 917 968]
+#queries = 300000
+========================
+LEARNED juntas = [ 36  86  90 288 751 896 917 968]
+Total #juntas learned &gt;= k. Exiting...
+_______________________________________________
+True juntas      = [ 36  90 288 645 751 896 917 968]
+Recovered juntas = [ 36  86  90 288 751 896 917 968]
+Match? : False
+
+Total number of queries = 904000
+Elapsed wall-clock time = 59.656 seconds
+
+</pre>
+</div>
+</div>
+
+<div class="hbox output_area"><div class="prompt output_prompt">
+    Out[115]:</div>
+<div class="box-flex1 output_subarea output_pyout">
+
+
+<pre>
+False
+</pre>
+
+</div>
+</div>
+
+</div>
+</div>
+
+</div></section>
+    </section><section>
+    <section>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>No problemo at <span class="math">\(n\)</span>=5000</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">
+In&nbsp;[120]:
+</div>
+<div class="input_area box-flex1">
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
+    <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148759</span><span class="p">),</span> <span class="n">threeWayMajorityVotingDepth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">crippleFactor</span><span class="o">=</span><span class="mf">0.65</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+
+<div class="vbox output_wrapper">
+<div class="output vbox">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_stream output_stdout">
+<pre>
+k-junta creation RNG seed  : 1378148759
+Learning algorithm RNG seed: 1378156250
+n = 5000
+k = 8
+Hidden boolean function = 10010001111110110101101100101111111011010111100110111011111101111001100001010110100000001111110100100000111001111110110101001111...followed by 128 bits
+True juntas =   [  72  594 2405 2644 3117 3159 4222 4371]
+Checking for constancy...
+Function is NOT constant. Learning its juntas...
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 99.283 seconds
+Hypothesized junta = [  72  360  416  551  594 1156 1208 1310 1503 1825 1865 1987 2169 2220 2263 2398 2405 2635 2644 2723 2879 3117 3159 3191 3650 3680 3765 3826 3970 4109 4222 4371 4571 4781 4807 4980]
+#queries = 300000
+======== Evolving Voter 2 ========
+Elapsed wall-clock time = 100.575 seconds
+Hypothesized junta = [  17   48   72  369  594  738 1083 1268 1321 1371 1400 1473 1899 2077 2375 2379 2405 2598 2644 2974 2993 3012 3117 3130 3159 3366 3374 3540 3575 3659 3982 4203 4207 4222 4371 4516 4613 4686 4725 4817 4945]
+#queries = 300000
+======== Evolving Voter 3 ========
+Elapsed wall-clock time = 98.735 seconds
+Hypothesized junta = [  15   47   72  282  484  594  680 1354 1394 1717 2218 2307 2313 2392 2405 2592 2599 2644 2691 2779 2863 3117 3159 3541 3636 3723 3732 3734 3807 3831 3952 4133 4222 4294 4397 4469 4603]
+#queries = 300000
+========================
+LEARNED juntas = [  72  594 2405 2644 3117 3159 4222 4371]
+Total #juntas learned &gt;= k. Exiting...
+_______________________________________________
+True juntas      = [  72  594 2405 2644 3117 3159 4222 4371]
+Recovered juntas = [  72  594 2405 2644 3117 3159 4222 4371]
+Match? : True
+
+Total number of queries = 904000
+Elapsed wall-clock time = 298.749 seconds
+
+</pre>
+</div>
+</div>
+
+<div class="hbox output_area"><div class="prompt output_prompt">
+    Out[120]:</div>
+<div class="box-flex1 output_subarea output_pyout">
+
+
+<pre>
+True
+</pre>
+
+</div>
+</div>
+
+</div>
+</div>
+
+</div></section>
+    </section><section>
+    <section>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Seems fine at <span class="math">\(n\)</span>=10000</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">
+In&nbsp;[128]:
+</div>
+<div class="input_area box-flex1">
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
+    <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148759</span><span class="p">),</span> <span class="n">threeWayMajorityVotingDepth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">crippleFactor</span><span class="o">=</span><span class="mf">0.65</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+
+<div class="vbox output_wrapper">
+<div class="output vbox">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_stream output_stdout">
+<pre>
+k-junta creation RNG seed  : 1378148759
+Learning algorithm RNG seed: 1378162371
+n = 10000
+k = 8
+Hidden boolean function = 10010001111110110101101100101111111011010111100110111011111101111001100001010110100000001111110100100000111001111110110101001111...followed by 128 bits
+True juntas =   [1139 1344 2252 7320 7829 8128 8140 8905]
+Checking for constancy...
+Function is NOT constant. Learning its juntas...
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 206.786 seconds
+Hypothesized junta = [ 188  303  356  793  854 1139 1160 1344 1412 1568 1956 2052 2252 2460 2626 2641 2675 2972 3352 3367 3566 3883 3886 4579 4667 4764 4902 5701 5777 5822 6080 6218 6483 6742 7201 7206 7443 7466 7491 7514 7829 7834 7992 8013 8021 8128 8140 8312 8334 8378 8905 9002 9253 9283 9370 9660 9831 9996]
+#queries = 300000
+======== Evolving Voter 2 ========
+Elapsed wall-clock time = 203.040 seconds
+Hypothesized junta = [ 241  301  348  446  681  720  773  833  939 1139 1202 1214 1218 1344 1600 1633 1720 1784 1899 1913 1927 1949 2147 2198 2252 2254 2341 2439 2467 2483 2542 2554 2619 2639 2645 2876 2966 3056 3225 3294 3581 3650 3952 4059 4249 4628 4790 4824 4831 4844 4942 5268 5279 5345 5553 6315 6351 6377 6644 6969 7243 7320 7354 7485 7733 7829 8063 8128 8140 8515 8527 8670 8905 9064 9232 9237 9376 9735 9742]
+#queries = 300000
+======== Evolving Voter 3 ========
+Elapsed wall-clock time = 202.626 seconds
+Hypothesized junta = [  17   23   61  321  449  624  822 1139 1344 1697 1723 1735 1831 1909 1964 1978 2053 2243 2252 2289 3323 3676 3716 3751 3760 3902 5125 5232 5411 5454 5486 5566 5818 6090 6357 6402 6671 6998 7218 7330 7365 7567 7655 7694 7721 7781 7791 7825 7829 8128 8140 8394 8404 8603 8723 8905 8970 9261 9726 9877]
+#queries = 300000
+========================
+LEARNED juntas = [1139 1344 2252 7829 8128 8140 8905]
+Checking for constancy under the following restriction 
+[(1139, 0), (1344, 0), (2252, 0), (7829, 0), (8128, 0), (8140, 0), (8905, 0)]
+Function seems constant under the restriction. Moving on...
+Checking for constancy under the following restriction 
+[(1139, 0), (1344, 0), (2252, 0), (7829, 0), (8128, 0), (8140, 0), (8905, 1)]
+Function is NOT constant. Learning its juntas under the restriction...
+	======== Evolving Voter 1 ========
+	Elapsed wall-clock time = 197.022 seconds
+	Hypothesized junta = [ 563 1858 1972 2064 2102 2327 2396 2515 2917 2929 2972 3161 3540 3919 4038 4161 4428 4742 4777 4891 5059 5362 5544 5668 5725 5926 5983 6159 6164 6387 7119 7124 7311 7320 7487 7744 7836 7979 8066 8173 8436 8712 8744 9318 9387 9589 9601 9732]
+	#queries = 300000
+	======== Evolving Voter 2 ========
+	Elapsed wall-clock time = 196.080 seconds
+	Hypothesized junta = [  44  302  486  794  968 1259 1442 1571 1772 1943 2249 2499 2989 3576 3701 3885 3961 3988 4136 4170 4232 4298 4467 4627 5307 5385 5537 5612 5702 5869 6075 6244 6474 6740 6945 7139 7149 7202 7320 7631 8258 8305 8486 8585 9325 9645 9915]
+	#queries = 300000
+	======== Evolving Voter 3 ========
+	Elapsed wall-clock time = 198.033 seconds
+	Hypothesized junta = [ 412  927 1422 1449 1785 2296 2436 2691 2702 3005 3044 3166 3234 3475 3513 4051 4093 4291 4561 4689 4699 4922 4988 5375 5683 6031 6240 7040 7320 7393 7552 7991 8075 8293 8618 9062 9081 9277 9469 9546 9641 9753]
+	#queries = 300000
+	========================
+	LEARNED juntas = [7320]
+	Total #juntas learned &gt;= k. Exiting...
+Total #juntas learned &gt;= k. Exiting...
+_______________________________________________
+True juntas      = [1139 1344 2252 7320 7829 8128 8140 8905]
+Recovered juntas = [1139 1344 2252 7320 7829 8128 8140 8905]
+Match? : True
+
+Total number of queries = 1812000
+Elapsed wall-clock time = 1204.809 seconds
+
+</pre>
+</div>
+</div>
+
+<div class="hbox output_area"><div class="prompt output_prompt">
+    Out[128]:</div>
+<div class="box-flex1 output_subarea output_pyout">
+
+
+<pre>
+True
+</pre>
+
+</div>
+</div>
+
+</div>
+</div>
+
+</div></section>
+    </section><section>
+    <section>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>And fails for <span class="math">\(n\)</span>=20000</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">
+In&nbsp;[122]:
+</div>
+<div class="input_area box-flex1">
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
+    <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148759</span><span class="p">),</span> <span class="n">threeWayMajorityVotingDepth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">crippleFactor</span><span class="o">=</span><span class="mf">0.65</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+
+<div class="vbox output_wrapper">
+<div class="output vbox">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_stream output_stdout">
+<pre>
+k-junta creation RNG seed  : 1378135520
+Learning algorithm RNG seed: 1378157792
+n = 20000
+k = 8
+Hidden boolean function = 10101000001000000010100001000000010010011111111011110101111100011001110011101110101100100101001101111100001001001010010000001101...followed by 128 bits
+True juntas =   [  810  3807  6840 11067 11132 12775 17919 19328]
+Checking for constancy...
+Function is NOT constant. Learning its juntas...
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 403.548 seconds
+Hypothesized junta = [  280   323   416   442   810   980  1071  1191  1464  1523  1732  1828  1833  1842  2106  2282  2402  2958  3088  3282  3357  3530  3597  3807  3871  3915  4037  4052  4178  4254  4512  4597  4738  4784  4829  4993  5006  5014  5116  5296  5403  5547  6662  6840  7058  7205  7480  7680  8315  8474  8520  8592  8922  9069  9106  9207  9280  9451  9516  9593  9765 10109 10389 10411 10598 10788 10804 10820 11067 11132 11274 11334 11555 11700 11711 11953 12126 12211 12357 12379 12518 12775 12790 12826 12921 13040 13493 13694 13777 14625 14726 15075 15190 15325 15395 15448 15554 15775 16245 16342 16369 16673 16805 17112 17249 17369 17406 17485 17491 17698 17886 17919 17969 18019 18033 18223 18508 18639 18672 18705 19247 19289 19328 19396 19551 19593 19804]
+#queries = 300000
+======== Evolving Voter 2 ========
+Elapsed wall-clock time = 401.797 seconds
+Hypothesized junta = [  104   157   310   314   527   626   657   810   894   979  1196  1227  1368  1836  2290  2388  2494  2755  3222  3233  3637  3646  3807  3930  3965  4025  4154  4172  4216  4272  4896  5147  6301  6370  6407  6828  6840  6931  6994  7040  7294  7301  7594  7627  7659  7856  7904  8102  8142  8567  8785  8801  8846  8924  9388  9456  9516  9567  9630  9634  9752  9859  9980 10202 10735 11067 11132 11246 11266 11896 12309 12775 12902 12974 13139 13236 13349 13525 13555 13558 13902 14028 14114 14613 15109 15230 15464 15588 15680 16451 16773 17182 17206 17247 17678 17727 17746 17797 17904 17919 17977 17992 18324 18428 19328 19430 19620 19649 19661]
+#queries = 300000
+======== Evolving Voter 3 ========
+Elapsed wall-clock time = 404.338 seconds
+Hypothesized junta = [  319   328   389   620   810  1016  1092  1137  1584  1731  1958  2199  2352  2629  2954  3092  3094  3122  3128  3228  3299  3435  3797  3807  4202  4386  4556  4859  4957  5287  5421  5482  5554  5696  5781  5880  6618  6805  6840  7032  7038  7087  7183  7291  7379  7492  7789  7828  8081  8425  8444  8595  8870  8905  8935  9036  9066  9161  9277  9716  9801  9940 10316 10374 10438 10551 10625 10822 10949 11067 11132 11551 11947 12043 12097 12711 12717 13377 13656 13667 13792 13848 14165 15232 15280 15301 15398 15957 15962 16059 16147 16153 16282 16420 16603 16730 16780 16837 16957 17113 17265 17391 17614 17615 17919 18167 18303 18469 18517 18597 18711 19125 19283 19328 19480 19610 19688 19885 19983]
+#queries = 300000
+========================
+LEARNED juntas = [  810  3807  6840  9516 11067 11132 12775 17919 19328]
+Total #juntas learned &gt;= k. Exiting...
+_______________________________________________
+True juntas      = [  810  3807  6840 11067 11132 12775 17919 19328]
+Recovered juntas = [  810  3807  6840  9516 11067 11132 12775 17919 19328]
+Match? : False
+
+Total number of queries = 904000
+Elapsed wall-clock time = 1210.195 seconds
+
+</pre>
+</div>
+</div>
+
+<div class="hbox output_area"><div class="prompt output_prompt">
+    Out[122]:</div>
+<div class="box-flex1 output_subarea output_pyout">
+
+
+<pre>
+False
+</pre>
+
+</div>
+</div>
+
+</div>
+</div>
+
+</div></section>
+    </section><section>
+    <section>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Increasing <code>threeWayMajorityVotingDepth</code> to 2 fixes the problem for <span class="math">\(n\)</span>=20,000 and much beyond. (You've gleaned the pattern here, right?)</p>
+</div>
+<div class="cell border-box-sizing code_cell vbox">
+<div class="input hbox">
+<div class="prompt input_prompt">
+In&nbsp;[*]:
+</div>
+<div class="input_area box-flex1">
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">,</span> 
+    <span class="n">rngSeed</span><span class="o">=</span><span class="mi">1378148759</span><span class="p">),</span> <span class="n">threeWayMajorityVotingDepth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">crippleFactor</span><span class="o">=</span><span class="mf">0.65</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+
+<div class="vbox output_wrapper">
+<div class="output vbox">
+
+
+<div class="hbox output_area"><div class="prompt"></div>
+<div class="box-flex1 output_subarea output_stream output_stdout">
+<pre>
+k-junta creation RNG seed  : 1378148759
+Learning algorithm RNG seed: 1378164697
+n = 20000
+k = 8
+Hidden boolean function = 10010001111110110101101100101111111011010111100110111011111101111001100001010110100000001111110100100000111001111110110101001111...followed by 128 bits
+True juntas =   [ 1332  7991 10132 10368 12616 17258 18705 19018]
+Checking for constancy...
+Function is NOT constant. Learning its juntas...
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 406.367 seconds
+Hypothesized junta = [   10   158   192   233   364   406   496   548   604   845   903  1332  1607  1707  1954  2037  2128  2522  2550  2599  2783  2917  3275  3355  3694  3721  3829  4029  4110  4445  4544  4560  5155  5506  5554  5953  6043  6069  6085  6164  6236  6366  6388  6476  6531  6780  6861  7648  7991  8064  8092  8251  8485  8535  8633  8679  8711  8805  8868  8897  8912  8950  8961  8977  9165  9298  9380  9406  9440  9453  9591  9598  9738 10132 10142 10260 10368 10537 10713 10866 11641 11676 11701 11704 11774 11964 12616 12690 12826 13151 13565 13847 13938 14239 14356 14613 14634 14834 14899 15042 15480 15769 15776 15839 15897 15959 15977 15999 16358 16548 16562 16639 16891 16909 17258 17338 17385 17457 17529 17679 17808 17809 17945 18093 18637 18705 18937 19018 19084 19126 19184 19317 19331 19541 19545 19640 19764 19786 19952]
+#queries = 300000
+======== Evolving Voter 2 ========
+Elapsed wall-clock time = 409.713 seconds
+Hypothesized junta = [  424   736   916   926   962  1000  1080  1216  1295  1332  1665  1780  1981  2042  2190  2191  2381  2543  2699  2736  2944  3122  3150  3167  3275  3929  4482  4624  4627  4681  4844  5125  5281  5291  5730  6238  6692  6734  6889  6959  6992  7019  7133  7138  7393  7991  8129  8308  8387  8728  8843  9028  9050  9133  9180  9247  9589  9665  9897 10132 10218 10318 10368 10414 10649 10687 10855 10875 10986 11073 11133 11139 11273 11412 11457 11481 11648 11838 12154 12164 12165 12193 12200 12497 12616 12804 12947 12989 13526 13859 14007 14039 14125 14156 14474 14653 14714 14721 14855 15061 15081 15090 15183 15194 15210 15371 15385 15611 15791 15997 16145 16263 16382 16598 17258 17716 17953 17982 18283 18451 18695 18705 19018 19180 19282 19437 19455 19491]
+#queries = 300000
+======== Evolving Voter 3 ========
+Elapsed wall-clock time = 399.426 seconds
+Hypothesized junta = [  274   285   494   553   890  1263  1332  1761  1811  2313  2322  2342  2611  2634  2640  2647  2751  2830  2985  3132  3198  3353  3637  3996  4318  4488  4493  4753  4841  4904  4963  5109  5486  5583  5687  5794  5896  6108  6208  6451  6476  6543  6735  7527  7560  7641  7713  7835  7940  7991  8043  8057  8071  8077  8365  8510  8605  8737  8745  8922  9126  9183  9235  9423 10016 10021 10034 10039 10049 10092 10132 10166 10172 10212 10234 10295 10368 10525 10556 10724 10869 10951 11168 11220 11222 11418 11497 11618 11636 11701 11728 11828 12100 12112 12126 12158 12616 12765 13189 13268 13442 13462 13629 13631 13765 13784 13850 13954 14079 14153 14337 14720 14876 14965 15005 15049 15704 15791 15926 16022 16241 16598 16599 16689 16887 16900 16939 17209 17258 17340 17358 18177 18199 18349 18481 18601 18621 18705 18824 19018 19222 19368 19427 19439 19714]
+#queries = 300000
+======== Evolving Voter 4 ========
+Elapsed wall-clock time = 401.822 seconds
+Hypothesized junta = [  335   532   604   778   866   912  1332  1418  1493  1494  1652  1949  2321  2575  2581  2677  2713  2983  3044  3158  3159  3350  3824  3898  4089  4147  4334  4491  4653  4899  4961  4990  5010  5374  5458  5479  5556  5614  5758  5924  6320  6563  6593  7011  7136  7191  7410  7471  7656  7921  7991  8081  8185  8239  8458  9073  9078  9178  9275  9284  9439  9467  9749  9771  9919 10070 10071 10132 10368 10629 10826 10981 11013 11119 11133 11297 11403 11529 11575 11650 11809 11940 11986 12531 12616 12874 12905 13127 13432 13462 13513 13958 14212 14359 14453 14544 14654 14697 14875 14930 14991 15068 15130 15156 15359 15606 15610 15642 15857 15983 16062 16412 17111 17258 17365 17454 17791 17834 17932 18153 18705 18792 18860 18935 19018 19164 19354 19951]
+#queries = 300000
+======== Evolving Voter 5 ========
+Elapsed wall-clock time = 398.978 seconds
+Hypothesized junta = [  405   440   818  1167  1175  1328  1464  1535  1536  1579  1653  1703  1814  1925  2137  2557  2696  2776  3005  3420  3457  3587  3900  4496  4521  4634  4648  4829  5103  5293  5383  5401  5420  5576  5710  5896  5899  6272  6686  6761  6830  6852  6865  7196  7721  7901  7907  7991  8038  8543  8677  8867  9485  9706  9893 10003 10073 10132 10159 10368 10599 10623 10910 11233 11385 11919 12129 12426 12616 12691 12703 12760 12843 12945 13004 13140 13185 13226 13427 13489 13498 13596 13808 13810 13846 13989 14043 14053 14512 14574 14875 14956 15050 15340 15371 15814 15913 15924 16145 16230 16247 16286 16292 16657 16689 17050 17157 17206 17258 17285 17480 17764 17934 17936 18607 18608 18705 18768 18918 19018 19224 19278 19593 19615 19641 19869 19960]
+#queries = 300000
+======== Evolving Voter 6 ========
+Elapsed wall-clock time = 398.822 seconds
+Hypothesized junta = [  484   560   565   574   832   895   995  1202  1332  1886  1979  2025  2085  2090  2242  2558  3085  3144  3190  3242  3253  3359  3694  4112  4147  4274  4439  4564  4595  4599  4756  5198  5339  5500  5573  5587  5645  5665  5721  5817  5854  5876  5897  6043  6136  6243  6360  6545  6837  6964  7109  7131  7566  7991  8301  8770  8862  9197  9255  9279  9342  9585  9590  9611  9924 10026 10124 10368 10371 10384 10413 10478 10532 10548 10562 10662 11077 11258 11346 11425 11782 11932 11975 12036 12044 12340 12365 12616 12911 12987 13063 13121 13162 13197 13484 13762 14048 14226 14227 14315 14491 14577 14733 14861 15188 15277 15507 15563 15567 15625 15904 16322 16358 16548 16633 16835 16877 16973 17117 17210 17258 17410 17650 17674 17774 18248 18644 18705 19018 19020 19295 19514 19698 19750 19941]
+#queries = 300000
+======== Evolving Voter 7 ========
+Elapsed wall-clock time = 400.514 seconds
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div></section>
+    </section><section>
+    <section>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For any hidden function <span class="math">\(h\)</span>, any <span class="math">\(\epsilon&gt;0\)</span>, and any <span class="math">\(k\)</span>, if the algorithm with <code>threeWayMajorityVotingDepth=0</code> learns, with probability of error &lt; <span class="math">\(\epsilon\)</span>, the relevant variables of a <span class="math">\(k\)</span>-junta over <span class="math">\(k+1\)</span> variables with hidden function <span class="math">\(h\)</span>, then for any value of <span class="math">\(n\)</span>, there is a value of <code>threeWayMajorityVotingDepth</code> for which the algorithm will learn, with probability of error &lt; <span class="math">\(\epsilon\)</span>, the relevant variables of the <span class="math">\(k\)</span>-junta over <span class="math">\(n\)</span> variables with hidden function <span class="math">\(h\)</span>.</p>
+<p>Actually, one can make a much stronger statement: for any given error tolerance, if a <span class="math">\(k\)</span>-junta with some hidden function <span class="math">\(h\)</span> over <span class="math">\(k\)</span>+1 variables can be solved, then any <span class="math">\(k\)</span> junta with hidden function <span class="math">\(h\)</span> can be solved in <span class="math">\(O(n \textrm{ polylog}(n))\)</span> time and <span class="math">\(O(\textrm{polylog}(n))\)</span> queries.</p>
 </div></section>
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Implicit concurrency theory suggests that for any value of <span class="math">\(k\)</span>, learning <span class="math">\(k\)</span>-parities is the &quot;hardest&quot; <span class="math">\(k\)</span>-junta for this algorithm.</p>
-<p>For <span class="math">\(k\)</span> &gt; 12, the algorithm typically fails to learn parities, regardless of the value of <span class="math">\(n\)</span>. Raising the majority voting depth will not help in this case.</p>
+<p>For <span class="math">\(k\)</span> &gt; 10, the algorithm typically fails to learn parities, regardless of the value of <span class="math">\(n\)</span>. Raising the majority voting depth will not help in this case.</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[32]:
+In&nbsp;[129]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;parity&quot;</span><span class="p">,</span> <span class="n">juntaIndices</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">13</span><span class="p">),</span>  
-                <span class="n">juntaCreationRngSeed</span><span class="o">=</span><span class="mi">1377510917</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;parity&quot;</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -2605,36 +3230,36 @@ In&nbsp;[32]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-k-junta creation RNG seed  : 1377510917
-Learning algorithm RNG seed: 1377854384
-n = 14
-k = 13
-Hidden boolean function = 01101001100101101001011001101001100101100110100101101001100101101001011001101001011010011001011001101001100101101001011001101001...followed by 8064 bits
-True junta indices =   [ 0  1  2  3  4  5  6  7  8  9 10 11 12]
+k-junta creation RNG seed  : 1378163851
+Learning algorithm RNG seed: 1378163851
+n = 12
+k = 11
+Hidden boolean function = 01101001100101101001011001101001100101100110100101101001100101101001011001101001011010011001011001101001100101101001011001101001...followed by 1920 bits
+True juntas =   [ 0  1  2  3  5  6  7  8  9 10 11]
 Checking for constancy...
 Function is NOT constant. Learning its juntas...
-======== Round 1 ========
-Elapsed wall-clock time = 2.420 seconds
-Hypothesized indices = []
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 0.583 seconds
+Hypothesized junta = []
 #queries = 300000
 ========================
 LEARNED juntas = []
 The function is not constant under the restriction [], but no junta could be learned.
-In other words, the algorithm has failed. 
+Chances are the learning algorithm will fail. 
 _______________________________________________
-True junta indices      = [ 0  1  2  3  4  5  6  7  8  9 10 11 12]
-Recovered junta indices = []
+True juntas      = [ 0  1  2  3  5  6  7  8  9 10 11]
+Recovered juntas = []
 Match? : False
 
-Total number of queries = 301000
-Elapsed wall-clock time = 2.422 seconds
+Total number of queries = 302000
+Elapsed wall-clock time = 0.585 seconds
 
 </pre>
 </div>
 </div>
 
 <div class="hbox output_area"><div class="prompt output_prompt">
-    Out[32]:</div>
+    Out[129]:</div>
 <div class="box-flex1 output_subarea output_pyout">
 
 
@@ -2652,15 +3277,16 @@ False
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The algorithm will typically learn <em>random</em> k-junta for values of <span class="math">\(k\)</span> beyond 12. But even this ability peters out as <span class="math">\(k\)</span> continues to increase. When this happens, increasing <code>majorityVotingDepth</code> will not help.</p>
+<p>The algorithm will typically learn <em>random</em> k-junta for values of <span class="math">\(k\)</span> beyond 10.</p>
+<p>But even this ability peters out as <span class="math">\(k\)</span> continues to increase. When this happens, increasing <code>threeWayMajorityVotingDepth</code> will not help.</p>
 </div>
 <div class="cell border-box-sizing code_cell vbox">
 <div class="input hbox">
 <div class="prompt input_prompt">
-In&nbsp;[33]:
+In&nbsp;[134]:
 </div>
 <div class="input_area box-flex1">
-<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">hiddenFnName</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">e</span><span class="o">.</span><span class="n">recoverJuntas</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">KJunta</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">juntas</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">hiddenFn</span><span class="o">=</span><span class="s">&quot;random&quot;</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -2673,35 +3299,58 @@ In&nbsp;[33]:
 <div class="hbox output_area"><div class="prompt"></div>
 <div class="box-flex1 output_subarea output_stream output_stdout">
 <pre>
-k-junta creation RNG seed  : 1377854403
-Learning algorithm RNG seed: 1377854403
+k-junta creation RNG seed  : 1378163976
+Learning algorithm RNG seed: 1378163981
 n = 100
 k = 18
-Hidden boolean function = 11111001100010101000101101111000110100010011111011111111010010001111001110011100001000110000100001101111110001100100111111001001...followed by 262016 bits
-True junta indices =   [ 9 17 19 30 38 45 47 48 56 64 71 77 79 80 83 89 90 94]
+Hidden boolean function = 11010001111101100110101110100111001100100000001000001111110111000100011000001101101001000000010111010011101010111010001111101110...followed by 262016 bits
+True juntas =   [ 7 15 19 26 30 34 39 43 49 52 56 64 69 75 79 80 87 92]
 Checking for constancy...
 Function is NOT constant. Learning its juntas...
-======== Round 1 ========
-Elapsed wall-clock time = 4.199 seconds
-Hypothesized indices = [ 9 17 19 30 38 45 47 48 56 64 71 77 79 80 83 89 90 94]
+======== Evolving Voter 1 ========
+Elapsed wall-clock time = 2.389 seconds
+Hypothesized junta = [ 7 15 19 26 30 34 39 43 49 52 56 69 75 80 92]
 #queries = 300000
 ========================
-LEARNED juntas = [ 9 17 19 30 38 45 47 48 56 64 71 77 79 80 83 89 90 94]
-#juntas learned &gt;= k. Exiting...
+LEARNED juntas = [ 7 15 19 26 30 34 39 43 49 52 56 69 75 80 92]
+Checking for constancy under the following restriction 
+[(7, 0), (15, 0), (19, 0), (26, 0), (30, 0), (34, 0), (39, 0), (43, 0), (49, 0), (52, 0), (56, 0), (69, 0), (75, 0), (80, 0), (92, 0)]
+Function is NOT constant. Learning its juntas under the restriction...
+	======== Evolving Voter 1 ========
+	Elapsed wall-clock time = 2.445 seconds
+	Hypothesized junta = [79 87]
+	#queries = 300000
+	========================
+	LEARNED juntas = [79 87]
+	Checking for constancy under the following restriction 
+	[(7, 0), (15, 0), (19, 0), (26, 0), (30, 0), (34, 0), (39, 0), (43, 0), (49, 0), (52, 0), (56, 0), (69, 0), (75, 0), (80, 0), (92, 0), (79, 0), (87, 0)]
+	Function seems constant under the restriction. Moving on...
+	Checking for constancy under the following restriction 
+	[(7, 0), (15, 0), (19, 0), (26, 0), (30, 0), (34, 0), (39, 0), (43, 0), (49, 0), (52, 0), (56, 0), (69, 0), (75, 0), (80, 0), (92, 0), (79, 0), (87, 1)]
+	Function is NOT constant. Learning its juntas under the restriction...
+		======== Evolving Voter 1 ========
+		Elapsed wall-clock time = 2.457 seconds
+		Hypothesized junta = [64]
+		#queries = 300000
+		========================
+		LEARNED juntas = [64]
+		Total #juntas learned &gt;= k. Exiting...
+	Total #juntas learned &gt;= k. Exiting...
+Total #juntas learned &gt;= k. Exiting...
 _______________________________________________
-True junta indices      = [ 9 17 19 30 38 45 47 48 56 64 71 77 79 80 83 89 90 94]
-Recovered junta indices = [ 9 17 19 30 38 45 47 48 56 64 71 77 79 80 83 89 90 94]
+True juntas      = [ 7 15 19 26 30 34 39 43 49 52 56 64 69 75 79 80 87 92]
+Recovered juntas = [ 7 15 19 26 30 34 39 43 49 52 56 64 69 75 79 80 87 92]
 Match? : True
 
-Total number of queries = 301000
-Elapsed wall-clock time = 4.222 seconds
+Total number of queries = 910000
+Elapsed wall-clock time = 7.313 seconds
 
 </pre>
 </div>
 </div>
 
 <div class="hbox output_area"><div class="prompt output_prompt">
-    Out[33]:</div>
+    Out[134]:</div>
 <div class="box-flex1 output_subarea output_pyout">
 
 
@@ -2719,11 +3368,22 @@ True
     </section><section>
     <section>
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Questions / Comments / Results of your own?</p>
-<p>Drop the <a href="https://plus.google.com/u/0/communities/112197200398230640220">Implicit Concurrency</a> Google+ community a line! Let's get a discussion going.</p>
-<h3 id="resources">Resources</h3>
+<p><strong>So <em>why</em> does any of this work?</strong> <br> Because of a little known computational phenomenon called <a href="arxiv.org/abs/1307.3824">Implicit Concurrency</a></p>
+<p><strong>And what does any of this have to do with evolutionary optimization?</strong> <br> Check out <a href="s3.amazonaws.com/burjorjee/www/foga010-burjorjee.pdf">Explaining Optimization in GAs with UX</a> for a connection</p>
+</div></section>
+    </section><section>
+    <section>
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="other-resources">Other Resources</h3>
 <p><a href="http://blog.hackingevolution.net/2013/08/29/evolving-juntas-with-implicit-concurrency/">Evolving Juntas blog post</a></p>
-<p><a href="http://github.com/burjorjee/evolve-juntas">Evolve Juntas github repository</a></p>
+<h3 id="getting-your-hands-dirty">Getting Your Hands Dirty</h3>
+<p>Download and play with <a href="https://raw.github.com/burjorjee/evolve-juntas/master/evolvejuntas.py">evolvejuntas.py</a></p>
+<ul>
+<li>A Python shell is bundled with most POSIX systems. If you have one, getting started should be easy</li>
+<li>The <a href="https://github.com/burjorjee/evolve-juntas">evolve-juntas github</a> page has more information</li>
+</ul>
+<h3 id="questions-comments-results-of-your-own">Questions / Comments / Results of your own ?</h3>
+<p>Drop the <strong><a href="https://plus.google.com/u/0/communities/112197200398230640220">Evorithmics Google+ Community</a></strong> a line!</p>
 </div></section>
     </section>
 </div>
